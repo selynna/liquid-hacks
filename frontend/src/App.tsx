@@ -5,6 +5,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
+import Dashboard from './pages/dashboard/Dashboard';
 import logo from './logo.svg';
 import './App.css';
 import styled from 'styled-components'
@@ -18,6 +19,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/dashboard">
+          <Dashboard />
         </Route>
         <Route path="/pickems">
         </Route>
