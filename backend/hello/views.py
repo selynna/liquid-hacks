@@ -37,5 +37,4 @@ def end(request):
         "Content-Type" : "application/x-www-form-urlencoded"
     }
     response = requests.get(base_url, headers=params)
-    print("%s" % response.text)
-    return r
+    return response
