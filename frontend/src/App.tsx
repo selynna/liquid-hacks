@@ -1,42 +1,43 @@
 import React from 'react';
-import styled from 'styled-components'
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-} from 'react-router-dom';
+import styled from 'styled-components';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import logo from './logo.svg';
 import './App.css';
 
-import Dashboard from 'pages/dashboard/Dashboard'
-import TeamCreation from 'pages/pickems/TeamCreation'
-
+import Dashboard from 'pages/dashboard/Dashboard';
+import TeamCreation from 'pages/pickems/TeamCreation';
 
 const Header = styled.h1`
   font-family: Valorant;
-`
+`;
 
 const Header2 = styled.h2`
-font-family: Tungsten-Bold;
-`
+  font-family: Tungsten-Bold;
+`;
 
 const Text = styled.p`
-font-family: OpenSans-Regular;
-`
+  font-family: OpenSans-Regular;
+`;
+
+const HeaderText = styled.p`
+  font-family: FFMark;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+`;
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/dashboard">
-        </Route>
+        <Route path="/dashboard"></Route>
         <Route path="/pickems">
         </Route>
         <Route path="/">
           <div className="App">
             <header className="App-header">
-            <Header>Valorant But Fantasy Football</Header>
+              <HeaderText>GAME INFO</HeaderText>
+              <Header>Valorant But Fantasy Football</Header>
               <img src={logo} className="App-logo" alt="logo" />
               <Header2>Section Header</Header2>
               <Text>

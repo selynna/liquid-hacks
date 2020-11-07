@@ -4,6 +4,7 @@
     "bgLight": "#ece8e1",
     "textDark": "#768079",
     "textLight": "#ece8e1",
+    "textWhite": "#F9F9F9",
     "primary": "#ff4655",
     "warning": "#E69700"
 }
