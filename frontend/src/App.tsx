@@ -32,6 +32,7 @@ function App() {
       <Switch>
         <Route path="/dashboard"></Route>
         <Route path="/pickems">
+          <TeamCreation />
         </Route>
         <Route path="/">
           <div className="App">
