@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from datetime import datetime
 
 from .models import Greeting
 
 import os
 import requests
+import json
 
 # Create your views here.
 #def index(request):
@@ -24,6 +26,25 @@ def db(request):
     greetings = Greeting.objects.all()
 
     return render(request, "db.html", {"greetings": greetings})
+
+# format: yyyy-mm-dd
+def current_date():
+    return datetime.today().strftime('%Y-%m-%d')
+
+def getTournament(request):
+    if request.method == 'GET':
+        base_url = 'https://api.liquipedia.net/api/v1/tournament'
+        post_body = {
+            'wiki': "valorant",
+            "apikey": os.environ.get('LIQUID_API_KEY'),
+            "conditions": "[[enddate::>%s]] AND [[startdate::<%s]]" % (current_date(), current_date())
+        }
+        response = requests.post(base_url, data=post_body)
+        json_data = json.loads(response.text)
+        tournament_names = {'results': []}
+        for tourn in json_data['result']:
+            tournament_names['results'].append(tourn['name'])
+        return HttpResponse(str(tournament_names))
 
 def getPlayersFromTeam(request):
     if request.method == 'GET':
