@@ -6,7 +6,6 @@ import logo from './logo.svg';
 import './App.css';
 
 import Dashboard from 'pages/dashboard/Dashboard';
-import TeamCreation from 'pages/pickems/TeamCreation';
 
 const Header = styled.h1`
   font-family: Valorant;
@@ -31,8 +30,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/dashboard"></Route>
-        <Route path="/pickems">
-        </Route>
+        <Route path="/pickems"></Route>
         <Route path="/">
           <div className="App">
             <header className="App-header">
