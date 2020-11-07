@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: "Valorant";
+  src: local("Valorant"), url('./res/Valorant.ttf') format('truetype');
+}
