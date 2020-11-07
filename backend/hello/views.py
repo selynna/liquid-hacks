@@ -25,12 +25,31 @@ def db(request):
 
     return render(request, "db.html", {"greetings": greetings})
 
-def getplayer(request):
+def getPlayersFromTeam(request):
+    if request.method == 'GET':
+        print("Get players from team")
+        params = request.GET.dict()
+        team = params["team"].strip('"')
+        print("  Extracted team id: ", team)
+        url = "https://api.liquipedia.net/api/v1/player"
+        data = {'apikey':os.environ.get('LIQUID_API_KEY'),
+                'wiki':'valorant',
+                'conditions':"[[team::"+team+"]]"
+                }
+        print("Sending request POST\n  URL: ",url,"\n  Params:",data)
+        r = requests.post(url, data)
+        print("  Response: ", r.text)
+        return HttpResponse(r.text)
+    else:
+        print("getPlayersFromTeam invalid method, POST only")
+        return HttpResponse("Invalid")
+
+def getPlayer(request):
     if request.method == 'GET':
         print("Get player")
         params = request.GET.dict()
         print(params)
-        playerid = params["player"]
+        playerid = params["player"].strip('"')
         print("Extracted player id: ",id)
         # Form Liquipedia API POST request
         url = "https://api.liquipedia.net/api/v1/player"
@@ -38,12 +57,10 @@ def getplayer(request):
                 'wiki':'valorant',
                 'conditions':"[[id::"+playerid+"]]"
                 }
-        print("Sending request POST")
-        print("  URL: ",url)
-        print("  Params: ",data)
+        print("Sending request POST\n  URL: ",url,"\n  Params:",data)
         r = requests.post(url, data)
         print("  Response: ",r.text)
         return HttpResponse(r.text)
     else:
-        print("Get player invalid method")
+        print("getPlayer invalid method, POST only")
         return HttpResponse("Invalid")
