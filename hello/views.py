@@ -36,6 +36,6 @@ def end(request):
         "apikey": APIKEY,
         "Content-Type" : "application/x-www-form-urlencoded"
     }
-    r = requests.get(base_url, headers=params)
-    print("%s" % r)
+    response = requests.get(base_url, headers=params)
+    print("%s" % response.text)
     return r
