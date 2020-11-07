@@ -6,6 +6,7 @@ from .models import Greeting
 import os
 import requests
 
+APIKEY = '172edrW4KxLIfk1SMsvLLLzdx6ugmT8anucDNe1QkkRUh7p3hcUQRzA6EcQmaqPuCA5y22mExEPVTmVWpt9NDgysDBlBWXv3PopI79A6DgS8QXBUgEcyaDhdKXlry6b5'
 # Create your views here.
 #def index(request):
 #    # return HttpResponse('Hello from Python!')
@@ -27,3 +28,14 @@ def db(request):
     greetings = Greeting.objects.all()
 
     return render(request, "db.html", {"greetings": greetings})
+
+def end(request):
+    base_url = 'https://api.liquipedia.net/api/v1/match'
+    params = {
+        'wiki': "valorant",
+        "apikey": APIKEY,
+        "Content-Type" : "application/x-www-form-urlencoded"
+    }
+    r = requests.get(base_url, headers=params)
+    print("%s" % r)
+    return r
