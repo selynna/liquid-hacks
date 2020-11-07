@@ -8,6 +8,11 @@ import {
 import Dashboard from './pages/dashboard/Dashboard';
 import logo from './logo.svg';
 import './App.css';
+import styled from 'styled-components'
+
+const Header = styled.h1`
+  font-family: Valorant;
+`
 
 function App() {
   return (
@@ -21,6 +26,7 @@ function App() {
         <Route path="/">
           <div className="App">
             <header className="App-header">
+            <Header>Valorant But Fantasy Football</Header>
               <img src={logo} className="App-logo" alt="logo" />
               <p>
                 Edit <code>src/App.tsx</code> and save to reload.
