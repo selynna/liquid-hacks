@@ -50,3 +50,26 @@ def end(request):
 # format: yyyy-mm-dd
 def current_date():
     return datetime.today().strftime('%Y-%m-%d')
+    
+def getplayer(request):
+    if request.method == 'GET':
+        print("Get player")
+        params = request.GET.dict()
+        print(params)
+        playerid = params["player"]
+        print("Extracted player id: ",id)
+        # Form Liquipedia API POST request
+        url = "https://api.liquipedia.net/api/v1/player"
+        data = {'apikey':os.environ.get('LIQUID_API_KEY'),
+                'wiki':'valorant',
+                'conditions':"[[id::"+playerid+"]]"
+                }
+        print("Sending request POST")
+        print("  URL: ",url)
+        print("  Params: ",data)
+        r = requests.post(url, data)
+        print("  Response: ",r.text)
+        return HttpResponse(r.text)
+    else:
+        print("Get player invalid method")
+        return HttpResponse("Invalid")
