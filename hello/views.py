@@ -7,7 +7,7 @@ import os
 import requests
 import json
 
-APIKEY = os.environ.get("API_KEY")
+API_KEY = os.environ.get("LIQUID_API_KEY", "put an api key in the environment")
 
 # Create your views here.
 #def index(request):
@@ -31,26 +31,35 @@ def db(request):
 
     return render(request, "db.html", {"greetings": greetings})
 
-def end(request):
-    print(APIKEY + "ASDFASDF")
-    base_url = 'https://api.liquipedia.net/api/v1/tournament'
-    post_body = {
-        'wiki': "valorant",
-        "apikey": APIKEY,
-        "rawstreams" : "true",
-        "limit" : 10
-    }
-    header = {
-        "Content-Type" : "application/x-www-form-urlencoded"
-    }
-    response = requests.post(base_url, data=post_body)
-    json_data = json.loads(response.text)
-    return HttpResponse(json.dumps(json_data))
+def get_tournament(request):
+    if request.method == 'GET':
+        base_url = 'https://api.liquipedia.net/api/v1/tournament'
+        post_body = {
+            'wiki': "valorant",
+            "apikey": API_KEY,
+            "conditions": "[[enddate::>%s]] AND [[startdate::<%s]]" % (current_date(), current_date())
+        }
+        response = requests.post(base_url, data=post_body)
+        json_data = json.loads(response.text)
+        print(json_data.keys())
+        tournament_names = {'results': []}
+        for tourn in json_data['result']:
+            tournament_names['results'].append(tourn['name'])
+        return HttpResponse(str(tournament_names))
+
+# def get_matches(request):
+#     if request.method == "GET":
+#         base_url = "https://api.liquipedia.net/api/v1/match"
+#         post_body = {
+#             'wiki': "valorant",
+#             "apikey": API_KEY,
+#             "conditions": "[[tournament::%s]]" % ()
+#         }
 
 # format: yyyy-mm-dd
 def current_date():
     return datetime.today().strftime('%Y-%m-%d')
-    
+
 def getplayer(request):
     if request.method == 'GET':
         print("Get player")
