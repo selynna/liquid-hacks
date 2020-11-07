@@ -41,3 +41,13 @@
   font-family: "Valorant";
   src: local("Valorant"), url('./res/Valorant.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: local("OpenSans-Regular"), url('./res/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "Tungsten-Bold";
+  src: local("Tungsten-Bold"), url('./res/Tungsten-Bold.ttf') format('truetype');
+}
