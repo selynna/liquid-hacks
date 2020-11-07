@@ -47,14 +47,14 @@ def get_tournament(request):
             tournament_names['results'].append(tourn['name'])
         return HttpResponse(str(tournament_names))
 
-# def get_matches(request):
-#     if request.method == "GET":
-#         base_url = "https://api.liquipedia.net/api/v1/match"
-#         post_body = {
-#             'wiki': "valorant",
-#             "apikey": API_KEY,
-#             "conditions": "[[tournament::%s]]" % ()
-#         }
+def get_matches(request):
+    if request.method == "GET":
+        base_url = "https://api.liquipedia.net/api/v1/match"
+        post_body = {
+            'wiki': "valorant",
+            "apikey": API_KEY,
+            "conditions": "[[tournament::%s]]" % ()
+        }
 
 # format: yyyy-mm-dd
 def current_date():
