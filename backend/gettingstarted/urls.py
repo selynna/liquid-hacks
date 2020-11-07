@@ -17,6 +17,6 @@ import hello.views
 urlpatterns = [
     path("", hello.views.index, name="index"),
     path("db/", hello.views.db, name="db"),
-    path("query/", hello.views.end, name="end"),
+    path("end/", hello.views.end, name="end"),
     path("admin/", admin.site.urls),
 ]
