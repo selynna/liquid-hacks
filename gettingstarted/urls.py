@@ -19,4 +19,5 @@ urlpatterns = [
     path("db/", hello.views.db, name="db"),
     path("end/", hello.views.end, name="end"),
     path("admin/", admin.site.urls),
+    path("getplayer/", hello.views.getplayer, name="getplayer"),
 ]
