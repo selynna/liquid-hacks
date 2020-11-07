@@ -1,9 +1,9 @@
 {
-    "bg-black": "#111111",
-    "bg-dark": "#0f1923",
-    "bg-light": "#ece8e1",
-    "text-dark": "#768079",
-    "text-light": "#ece8e1",
+    "bgBlack": "#111111",
+    "bgDark": "#0f1923",
+    "bgLight": "#ece8e1",
+    "textDark": "#768079",
+    "textLight": "#ece8e1",
     "primary": "#ff4655",
     "warning": "#E69700"
 }
