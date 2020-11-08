@@ -218,8 +218,12 @@ def getAllUsers(request):
     if request.method == "GET":
         users = []
         for u in User.objects.all():
-            string += u.userId +"\n"
-    return HttpResponse(string)
+            json_object = {
+                "userId" : u.userId,
+                "picks" : u.picks
+            }
+            users.append(json_object)
+        return HttpResponse(json.dumps(users))
 
 def getMatchesInTournament(request):
     pass
