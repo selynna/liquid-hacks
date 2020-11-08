@@ -126,7 +126,7 @@ const Dashboard = () => {
   const [score, setScore] = useState(0);
 
   const fetchPicks = useCallback(async () => {
-    const res = await axios.get(process.env.REACT_APP_API_URL + "/getUserPicks/?uid=selynna")
+    const res = await axios.get(process.env.REACT_APP_API_URL + "/getUserPicks/?uid=" + localStorage.getItem('uid'))
     const playerArr = res.data.picks;
     const teamPromises = playerArr.map(player =>
       axios.all([
