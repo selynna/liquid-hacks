@@ -4,8 +4,9 @@ import Colors from 'res/colors.json';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import PlayerCell from './PlayerCell';
+import teamToLogo from './teamToLogo';
 
-const CustomTeam = ({ customTeam }) => {
+const CustomTeam = ({ customTeam, findTeam }) => {
   return (
     <Droppable droppableId="customTeam" isDropDisabled={customTeam.length >= 5}>
       {(provided, snapshot) => (
@@ -22,6 +23,7 @@ const CustomTeam = ({ customTeam }) => {
                   {...provided.dragHandleProps}
                   innerRef={provided.innerRef}
                   player={player}
+                  logo={teamToLogo[findTeam(player.name)]}
                 />
               )}
             </Draggable>

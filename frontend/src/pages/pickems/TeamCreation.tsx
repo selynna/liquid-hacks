@@ -178,7 +178,7 @@ const TeamCreation = () => {
               Your team ({customTeam.length}/5)
             </Header>
             <P style={{ marginBottom: 16 }}>Drag outside to remove players</P>
-            <CustomTeam customTeam={customTeam} />
+            <CustomTeam customTeam={customTeam} findTeam={findTeam} />
           </Section>
           <Section>
             <Header style={{ fontSize: '5rem' }}>Find players</Header>
