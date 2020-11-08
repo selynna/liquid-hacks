@@ -37,7 +37,7 @@ const UserRank = ({ playerList }: UserTeamProps) => (
       RANKINGS
     </Header2>
     {userList.map((user, place) => 
-      <TeamWrapper user={(user.slice(-4) === 'you)')}>
+      <TeamWrapper key={user} user={(user.slice(-4) === 'you)')}>
         <UserCol>
           {user}
         </UserCol>
