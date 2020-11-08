@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
 import { primary } from 'res/colors.json';
@@ -24,26 +25,42 @@ const placeEnd = (num: number) => {
   }
 }
 
-const UserRank = ({ score }: UserTeamProps) => (
-  <UserRankWrapper>
-    <Header2>
-      RANKINGS
-    </Header2>
-    {userList.map((user, place) => 
-      <TeamWrapper key={user} user={(user.slice(-4) === 'you)')}>
-        <UserCol>
-          {user}
-        </UserCol>
-        {/* {playerList.map(player => <PhotoWrapper />)} */}
-        <ScoreCol>100</ScoreCol>
-        {user === "you"
-          ? "you're in " + (place + 1) + placeEnd(place + 1) + " place!"
-          : ""
-        }
-      </TeamWrapper>
-    )}
-  </UserRankWrapper>
-);
+const UserRank = ({ score }: UserTeamProps) => {
+  const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/getAllUsers/`);
+      const newUserList = res.data.map(user => ({
+        userId: user.userId,
+        score: user.userId === "selynna" ? score : 100,
+      }))
+      newUserList.sort((a, b) => b.score - a.score);
+      setUserList(newUserList);
+    };
+    fetchMatches();
+  }, []);
+
+  return (
+    <UserRankWrapper>
+      <Header2>
+        RANKINGS
+      </Header2>
+      {userList.map((user: any, place) => 
+        <TeamWrapper key={user.userId} user={user.userId === "selynna"}>
+          <UserCol>
+            {user.userId === "selynna" ? user.userId + " (you)" : user.userId}
+          </UserCol>
+          <ScoreCol>{user.score}</ScoreCol>
+          {user === "you"
+            ? "you're in " + (place + 1) + placeEnd(place + 1) + " place!"
+            : ""
+          }
+        </TeamWrapper>
+      )}
+    </UserRankWrapper>
+  )
+};
 
 const UserRankWrapper =  styled.div`
   font-family: OpenSans-Regular;
