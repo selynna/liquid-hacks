@@ -20,7 +20,7 @@ const UserTeam = ({ playerList }: UserTeamProps) => (
       YOUR TEAM
     </Header2>
     <TeamWrapper>
-      {playerList.map(player => <Player key={player.playerName} {...player} />)}
+      {playerList.map((player, i) => <Player key={player.playerName + i} {...player} />)}
     </TeamWrapper>
   </div>
 );
