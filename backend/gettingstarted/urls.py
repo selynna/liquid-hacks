@@ -17,10 +17,9 @@ import hello.views
 urlpatterns = [
     path("", hello.views.index, name="index"),
     path("db/", hello.views.db, name="db"),
-    path("gettournament/", hello.views.getTournament, name="getTournament"),
+    path("gettournaments/", hello.views.getTournaments, name="getTournaments"),
     path("admin/", admin.site.urls),
     path("getplayer/", hello.views.getPlayer, name="getPlayer"),
     path("getmatches/", hello.views.getMatches, name="getMatches"),
-    path("gettournament/", hello.views.getTournament, name="getTournament"),
     path("getplayersfromteam/", hello.views.getPlayersFromTeam, name="getPlayersFromTeam"),
 ]
