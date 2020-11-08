@@ -50,10 +50,7 @@ def getTournaments(request):
         }
         response = requests.post(base_url, data=post_body)
         json_data = json.loads(response.text)
-        tournament_names = {'results': []}
-        for tourn in json_data['result']:
-            tournament_names['results'].append(tourn['name'])
-        return HttpResponse(str(tournament_names))
+        return HttpResponse(str(json_data))
 
 def getMatches(request):
     if request.method == 'GET':
@@ -68,6 +65,41 @@ def getMatches(request):
         r = requests.post(base_url, post_body)
         print("response: %s", r.text)
         return HttpResponse(r.text)
+
+def addTeam(team, players, denyList, teamResults):
+    if not team in denyList:
+        print("Adding team "+team+", players: "+str(players))
+        denyList.append(team)
+        teamResults[team] = players
+
+def getTeamsFromTournament(request):
+    if request.method == 'GET':
+        print("Get teams from tournament")
+        params = request.GET.dict()
+        tournament = params["tournament"].strip('"')
+        print("  Extracted tournament id: ", tournament)
+        base_url = 'https://api.liquipedia.net/api/v1/match'
+        post_body = {
+            'wiki': "valorant",
+            "apikey": os.environ.get('LIQUID_API_KEY'),
+            "conditions": "[[tournament::%s]]" % (tournament)
+        }
+        r = requests.post(base_url, post_body)
+        #print("response: %s", r.text)
+
+        # Parse through matches and extract teamsd
+        teams = {}
+        #json = r.json()
+        results = r.json()["result"]
+
+        denyList = []
+        teamResults = {}
+        for match in results:
+            print(match["opponent1"]+" vs. "+match["opponent2"])
+            addTeam(match["opponent1"], match["opponent1players"], denyList, teamResults)
+            addTeam(match["opponent2"], match["opponent2players"], denyList, teamResults)
+        resultJson = json.dumps(teamResults)
+        return HttpResponse(resultJson)
 
 def getPlayersFromTeam(request):
     if request.method == 'GET':
@@ -113,7 +145,7 @@ def updateUser(request):
     if request.method == "GET":
         u = User(userId="endpoint", picks=["there", "are", "poggers"])
         u.save()
-        return HttpResponse("i added a thingy")
+    return HttpResponse("i added a thingy")
 
 def createUser(userId: str, picks: list):
     if User.objects.filter(userId=userId).exists():
