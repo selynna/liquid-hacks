@@ -1,17 +1,28 @@
 import React from 'react';
+import styled from 'styled-components'
 import {
   Route,
   BrowserRouter as Router,
   Switch,
 } from 'react-router-dom';
 
-import Dashboard from './pages/dashboard/Dashboard';
 import logo from './logo.svg';
 import './App.css';
-import styled from 'styled-components'
+
+import Dashboard from 'pages/dashboard/Dashboard'
+import TeamCreation from 'pages/pickems/TeamCreation'
+
 
 const Header = styled.h1`
   font-family: Valorant;
+`
+
+const Header2 = styled.h2`
+font-family: Tungsten-Bold;
+`
+
+const Text = styled.p`
+font-family: OpenSans-Regular;
 `
 
 function App() {
@@ -19,7 +30,6 @@ function App() {
     <Router>
       <Switch>
         <Route path="/dashboard">
-          <Dashboard />
         </Route>
         <Route path="/pickems">
         </Route>
@@ -28,9 +38,10 @@ function App() {
             <header className="App-header">
             <Header>Valorant But Fantasy Football</Header>
               <img src={logo} className="App-logo" alt="logo" />
-              <p>
+              <Header2>Section Header</Header2>
+              <Text>
                 Edit <code>src/App.tsx</code> and save to reload.
-              </p>
+              </Text>
               <a
                 className="App-link"
                 href="https://reactjs.org"
