@@ -1,18 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import Colors from 'res/colors.json';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import Button from 'components/Button';
+import { Valorant } from 'components/Text';
 
-const TopBar = ({ className }: { className?: string }) => (
-  <Container className={className}>
-    <Section>
-      <Link>Game info</Link>
-      <Link>Link #2</Link>
-    </Section>
-    <StartButton>Get started</StartButton>
-  </Container>
-);
+const TopBar = ({ className }: { className?: string }) => {
+  const history = useHistory();
+
+  return (
+    <Container className={className}>
+      <Section>
+        <Link to="/">
+          <Valorant>Built Diff</Valorant>
+        </Link>
+        {localStorage.getItem('uid') && <Link to="/dashboard">Dashboard</Link>}
+      </Section>
+      <StartButton onClick={() => history.push('/')}>Get started</StartButton>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   position: sticky;
@@ -42,9 +50,10 @@ const Container = styled.div`
 const Section = styled.div`
   display: flex;
   align-self: stretch;
+  align-items: center;
 `;
 
-const Link = styled.a`
+const Link = styled(RouterLink)`
   display: flex;
   align-items: center;
   margin: 0 10px;
@@ -54,6 +63,9 @@ const Link = styled.a`
   font-family: FFMark;
   font-size: 12px;
   letter-spacing: 0.1em;
+  color: ${Colors.textWhite};
+  text-decoration: none;
+  align-self: stretch;
 
   &:hover {
     border-bottom-color: ${Colors.primary};

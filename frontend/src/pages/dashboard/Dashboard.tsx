@@ -5,6 +5,7 @@ import { bgDark, textLight } from 'res/colors.json';
 import PostMatchResults from 'components/PostMatchResults';
 import UserRank from 'components/UserRank';
 import UserTeam from 'components/UserTeam';
+import TopBar from 'components/TopBar';
 import axios from 'axios';
 
 type PlayerInfo = {
@@ -177,20 +178,24 @@ const Dashboard = () => {
     fetchMatches();
   }, []);
   return (
-    <DashboardWrapper>
-      <TeamRankWrapper>
-        <UserTeam playerList={playerList} />
-        <UserRank playerList={playerList} />
-      </TeamRankWrapper>
-      <div>
-        <Header2>
-          POST MATCH RESULTS
-          {/* first strike na in the background in block text? */}
-        </Header2>
+    <>
+      <TopBar />
+      <DashboardWrapper>
+        <TeamRankWrapper>
+          <UserTeam playerList={playerList} />
+          <UserRank playerList={playerList} />
+        </TeamRankWrapper>
+        <div>
+          <Header2>
+            POST MATCH RESULTS
+            {/* first strike na in the background in block text? */}
+          </Header2>
 
-        {matches && matches.map((match) => <PostMatchResults match={match} />)}
-      </div>
-    </DashboardWrapper>
+          {matches &&
+            matches.map((match) => <PostMatchResults match={match} />)}
+        </div>
+      </DashboardWrapper>
+    </>
   );
 };
 
