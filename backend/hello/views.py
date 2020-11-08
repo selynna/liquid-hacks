@@ -59,11 +59,24 @@ def getMatches(request):
         post_body = {
             'wiki': "valorant",
             "apikey": os.environ.get('LIQUID_API_KEY'),
-            "conditions": "[[tournament::%s]]" % (tournament)
+            "conditions": "[[tournament::%s]]" % (tournament),
         }
         r = requests.post(base_url, post_body)
-        print("response: %s", r.text)
-        return HttpResponse(r.text)
+        rObj = json.loads(r.text)
+
+        for match in rObj["result"]:
+            matchid = match["matchid"]
+            game_url = 'https://api.liquipedia.net/api/v1/game'
+            game_post_body = {
+                'wiki': "valorant",
+                "apikey": os.environ.get('LIQUID_API_KEY'),
+                "conditions": "[[matchid::%s]]" % (matchid),
+            }
+            gameRes = requests.post(game_url, game_post_body)
+            gameResObj = json.loads(gameRes.text)
+            match["games"] = gameResObj["result"]
+
+        return HttpResponse(json.dumps(rObj))
 
 def addTeam(team, players, denyList, teamResults):
     if not team in denyList:
