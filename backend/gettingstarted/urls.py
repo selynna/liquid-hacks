@@ -26,4 +26,6 @@ urlpatterns = [
     path("getUserPicks/", hello.views.getUserPicks, name="getUserPicks"),
     path("addUserPick/", hello.views.addUserPick, name="addUserPick"),
     path("deleteUserPick/", hello.views.deleteUserPick, name="deleteUserPick"),
+    path("setUserPicks/", hello.views.setUserPicks, name="setUserPicks"),
+    path("getPlayerCombatScore/", hello.views.getPlayerCombatScore, name="getPlayerCombatScore"),
 ]
