@@ -34,7 +34,7 @@ def db(request):
 def current_date():
     return datetime.today().strftime('%Y-%m-%d')
 
-def getTournament(request):
+def getTournaments(request):
     if request.method == 'GET':
         base_url = 'https://api.liquipedia.net/api/v1/tournament'
         post_body = {
