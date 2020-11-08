@@ -49,8 +49,7 @@ def getTournaments(request):
             "conditions": "([[enddate::>%s]] OR [[enddate::%s]]) AND ([[startdate::<%s]] OR [[startdate::%s]])" % (date, date, date, date)
         }
         response = requests.post(base_url, data=post_body)
-        json_data = json.loads(response.text)
-        return HttpResponse(str(json_data))
+        return HttpResponse(response.text)
 
 def getMatches(request):
     if request.method == 'GET':
@@ -169,10 +168,10 @@ def createUser(userId: str, picks: list):
         print("{} was added to the database".format(u.__str__()))
 
 def userResponse(userId: str):
-    return {
+    return json.dumps({
         "user" : userId,
         "picks" : User.objects.get(userId=userId).picks
-    }
+    })
 
 def getUserPicks(request):
     # given userid -> check existence -> return json array
@@ -181,7 +180,21 @@ def getUserPicks(request):
         userId = params["uid"].strip('"')
         if not User.objects.filter(userId=userId).exists():
             createUser(userId, [])
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
+
+def setUserPicks(request):
+    if request.method == "GET":
+        params = request.GET.dict()
+        userId = params["uid"].strip('"')
+        players = params["players"].strip('"')
+        players = players.split(",")[:5] # max 5 players for picks
+        if not User.objects.filter(userId=userId).exists():
+            createUser(userId, players)
+        else:
+            u = User.objects.get(userId=userId)
+            u.picks = players
+            u.save()
+        return HttpResponse(userResponse(userId))
 
 def addUserPick(request):
     #given userid + playerid -> add to db -> return new picks array
@@ -196,7 +209,7 @@ def addUserPick(request):
             if playerId not in u.picks:
                 u.picks.append(playerId)
                 u.save()
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
 
 def deleteUserPick(request):
     #given userid + playerid -> remove pick from array -> return new picks array
@@ -211,6 +224,95 @@ def deleteUserPick(request):
             if playerId in u.picks:
                 u.picks.remove(playerId)
                 u.save()
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
 
+def getAllUsers(request):
+    string= ""
+    if request.method == "GET":
+        users = []
+        for u in User.objects.all():
+            json_object = {
+                "userId" : u.userId,
+                "picks" : u.picks
+            }
+            users.append(json_object)
+        return HttpResponse(json.dumps(users))
 
+def getPlayerCombatScore(request):
+    # given tournament name & player name -> return average combat score
+    if request.method == "GET":
+        params = request.GET.dict()
+        tournament_name = params["tournament"].strip('"')
+        player_name = params["player"].strip('"')
+        match_ids = get_match_ids(tournament_name, player_name)
+        # for every match use game API to get KDA
+        kda = getKda(player_name, match_ids)
+        score = combat_calculation(kda)
+        ret_json = {
+            "player" : player_name,
+            "score" : score
+        }
+        return HttpResponse(json.dumps(ret_json))
+    
+def combat_calculation(kda: list):
+    # [kills, deaths, assists]
+    score = 0
+    for i in range(3):
+        if i == 0:
+            score += 30*kda[i]
+        elif i == 1:
+            score += -5*kda[i]
+        elif i == 2:
+            score += 10*kda[i]
+    return score
+
+def getKda(player: str, matchids: list):
+    # Kills / Deaths / Assists
+    kda = [0, 0, 0]
+    if len(matchids) == 0:
+        return kda
+    url = "https://api.liquipedia.net/api/v1/game"
+    post_body = {
+        'wiki': "valorant",
+        "apikey": os.environ.get('LIQUID_API_KEY'),
+        "conditions": match_cond(matchids)
+    }
+    response = requests.post(url, data=post_body)
+    json_data = json.loads(response.text)
+    for match in json_data['result']:
+        the_key = "t%skda%s"
+        for k, v in match['extradata'].items():
+            if v == player:
+                the_key = the_key % (k[1], k[-1])
+                kda_str = match['extradata'][the_key]
+                kda_str = kda_str.split('/')
+                for i in range(3):
+                    kda[i] += int(kda_str[i])
+                break
+    return kda
+
+def match_cond(matchids: list):
+    ret_val = ""
+    for i in range(len(matchids)):
+        ret_val += "[[matchid::%s]] " % (matchids[i])
+        if i != len(matchids) - 1:
+            ret_val += "OR "
+    return ret_val
+
+def get_match_ids(tournament_name: str, player_name: str):
+    match_id = []
+    url = 'https://api.liquipedia.net/api/v1/match'
+    post_body = {
+        'wiki': "valorant",
+        "apikey": os.environ.get('LIQUID_API_KEY'),
+        "conditions": "[[tournament::%s]]" % (tournament_name)
+    }
+    response = requests.post(url, data=post_body)
+    json_data = json.loads(response.text)
+    for match in json_data["result"]:
+        if player_name in match["opponent1players"].values():
+            match_id.append(match['matchid'])
+            continue
+        elif player_name in match["opponent2players"].values():
+            match_id.append(match['matchid'])
+    return match_id
