@@ -69,10 +69,27 @@ const LandingPage = () => {
       </BgContainer>
       <Section>
         <div>
-          <Header>This is our app</Header>
-          <P>ay lmao</P>
+          <Header style={{ fontSize: 48 }}>Build your pro team</Header>
+          <P style={{ maxWidth: 300, fontSize: 14 }}>
+            Built Diff is a webapp that allows you to construct your own
+            Valorant team from a pool of pro players and watch them compete in
+            the latest e-sports tournaments. Kills, deaths, and assists your
+            players earn will contribute to your team's overall combat score.
+            <br />
+            Compete against your friends and the global leaderboards to see who
+            drafted the true champions.
+          </P>
         </div>
-        <div>ayyy</div>
+        <img
+          style={{
+            width: 300,
+            height: 'auto',
+            marginLeft: 96,
+            padding: 6,
+            border: `1px solid ${Colors.borderLight}`,
+          }}
+          src="https://i.gyazo.com/00983eae2248b1a356a77a4b7cc1a002.png"
+        />
       </Section>
     </Page>
   );

@@ -18,8 +18,9 @@ const Flag = styled.img`
   padding-right: 16px;
 `;
 
-const PlayerCell = ({ player, innerRef, ...props }) => (
+const PlayerCell = ({ player, logo, innerRef, ...props }) => (
   <Container ref={innerRef} {...props}>
+    <Flag src={logo} />
     <span>{player.name}</span>
   </Container>
 );
