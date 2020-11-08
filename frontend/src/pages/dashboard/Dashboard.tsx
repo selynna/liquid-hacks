@@ -163,33 +163,54 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchPicks();
+    console.log("players", players);
     const teamPromises = players.map(player =>
-      axios.get(process.env.REACT_APP_API_URL + "/getplayer/?player=" + player)
-    );
-    Promise.all(teamPromises).then(res => {
-      const newList = res.map(player => {
-        const data = player.data.result[0];
-        return {
-          playerName: data.id,
-          playerTeam: data.team,
+      axios.all([
+        axios.get(process.env.REACT_APP_API_URL + "/getplayer/?player=" + player),
+        axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player),
+      ]).then(axios.spread((team, score) => {
+        console.log("team", team.data.result[0].team, "score", score.data.score);
+        setPlayerInfoList([...playerInfoList, {
+          playerName: team.data.result[0].id,
+          playerTeam: team.data.result[0].team,
+          playerScore: score.data.score,
           playerKDA: "10/5/10",
-        }
-      }) as any;
-      setPlayerInfoList(newList);
-    });
-    const acsPromises = players.map(player =>
-      axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player)
+        }])
+        setScore(score + score.data.score);
+      }))
     );
-    Promise.all(acsPromises).then(res => {
-      const newList = res.map((player, i) => {
-        setScore(score + player.data.score);
-        return {
-          ...playerInfoList[i],
-          playerScore: player.data.score,
-        }
-      }) as any;
-      setPlayerInfoList(newList);
-    });
+
+    Promise.all(teamPromises);
+
+    // console.log(teamPromises);
+    // Promise.all(teamPromises).then(res => {
+    //   console.log(res);
+    //   const newList = res.map(player => {
+    //     // const data = player.data.result[0];
+    //     const data = { id: 1, team: "asdf"}
+    //     return {
+    //       playerName: data.id,
+    //       playerTeam: data.team,
+    //       playerKDA: "10/5/10",
+    //     }
+    //   }) as any;
+    //   setPlayerInfoList(newList);
+    // });
+    // console.log("pil", playerInfoList);
+    // const acsPromises = players.map(player =>
+    //   axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player)
+    // );
+    // Promise.all(acsPromises).then(res => {
+    //   const newList = res.map((player, i) => {
+    //     setScore(score + player.data.score);
+    //     return {
+    //       ...playerInfoList[i],
+    //       playerScore: player.data.score,
+    //     }
+    //   }) as any;
+    //   console.log("newList", newList);
+    //   setPlayerInfoList(newList);
+    // });
   }, []);
 
   return (
