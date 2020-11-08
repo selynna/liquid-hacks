@@ -49,6 +49,20 @@ def getTournament(request):
             tournament_names['results'].append(tourn['name'])
         return HttpResponse(str(tournament_names))
 
+def getMatches(request):
+    if request.method == 'GET':
+        base_url = 'https://api.liquipedia.net/api/v1/match'
+        params = request.GET.dict()
+        tournament = params["tournament"].strip("")
+        post_body = {
+            'wiki': "valorant",
+            "apikey": os.environ.get('LIQUID_API_KEY'),
+            "conditions": "[[tournament::%s]]" % (tournament)
+        }
+        r = requests.post(base_url, post_body)
+        print("response: %s", r.text)
+        return HttpResponse(r.text)
+
 def getPlayersFromTeam(request):
     if request.method == 'GET':
         print("Get players from team")
