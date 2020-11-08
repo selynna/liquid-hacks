@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/liquid-hacks/static/css/main.94e1cb30.chunk.css",
-    "main.js": "/liquid-hacks/static/js/main.1ef68e6c.chunk.js",
-    "main.js.map": "/liquid-hacks/static/js/main.1ef68e6c.chunk.js.map",
+    "main.js": "/liquid-hacks/static/js/main.4f0508ce.chunk.js",
+    "main.js.map": "/liquid-hacks/static/js/main.4f0508ce.chunk.js.map",
     "runtime-main.js": "/liquid-hacks/static/js/runtime-main.ef41f4f3.js",
     "runtime-main.js.map": "/liquid-hacks/static/js/runtime-main.ef41f4f3.js.map",
     "static/js/2.6ec385a5.chunk.js": "/liquid-hacks/static/js/2.6ec385a5.chunk.js",
@@ -20,6 +20,6 @@
     "static/js/runtime-main.ef41f4f3.js",
     "static/js/2.6ec385a5.chunk.js",
     "static/css/main.94e1cb30.chunk.css",
-    "static/js/main.1ef68e6c.chunk.js"
+    "static/js/main.4f0508ce.chunk.js"
   ]
 }
