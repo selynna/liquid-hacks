@@ -218,7 +218,7 @@ def getAllUsers(request):
     if request.method == "GET":
         users = []
         for u in User.objects.all():
-            string += type(u) + "\n"
+            string += u.userId +"\n"
     return HttpResponse(string)
 
 def getMatchesInTournament(request):
