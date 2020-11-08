@@ -36,7 +36,7 @@ const CustomTeam = ({ customTeam, findTeam }) => {
 };
 
 const Container = styled.div`
-  height: 395px;
+  height: 390px;
   border: 1px solid ${Colors.borderLight};
 `;
 

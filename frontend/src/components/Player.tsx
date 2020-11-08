@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { primary } from 'res/colors.json';
 
 type PlayerProps = {
-  playerName: string,
-  playerTeam: string,
-  playerKDA: string,
-  playerScore: number,
-}
+  playerName: string;
+  playerTeam: string;
+  playerKDA: string;
+  playerScore: number;
+};
 
 const teamToLogo = {
   'Cloud9 Blue': 'https://i.imgur.com/FQlShBU.png',
@@ -37,10 +37,14 @@ const Player = ({
   playerScore,
 }: PlayerProps) => (
   <PlayerWrapper>
-    <PhotoWrapper src={teamToLogo[playerTeam]} />
+    <PhotoWrapper
+      src={teamToLogo[playerTeam] || teamToLogo['The Slimy Boogermen']}
+    />
     {/* <img src={teamToLogo[playerTeam]} /> */}
     <PlayerInfo>
-      <HeaderText>{playerName} - {playerTeam}</HeaderText>
+      <HeaderText>
+        {playerName} - {playerTeam}
+      </HeaderText>
       <DataWrapper>
         {/* <Text>Average KDA: {playerKDA}</Text> */}
         <Text>Total ACS: {playerScore}</Text>
