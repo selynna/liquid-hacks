@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { bgDark, textLight } from 'res/colors.json';
 import PostMatchResults from 'components/PostMatchResults';
+import TopBar from 'components/TopBar';
 import UserRank from 'components/UserRank';
 import UserTeam from 'components/UserTeam';
 
@@ -176,19 +177,22 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <DashboardWrapper>
-      <TeamRankWrapper>
-        <UserTeam playerList={playerInfoList} />
-        <UserRank score={score} />
-      </TeamRankWrapper>
-      <ResultsWrapper>
-        <Header2>
-          POST MATCH RESULTS
-          {/* first strike na in the background in block text? */}
-        </Header2>
-        {matches && matches.map((match) => <PostMatchResults match={match} />)}
-      </ResultsWrapper>
-    </DashboardWrapper>
+    <>
+      <TopBar />
+      <DashboardWrapper>
+        <TeamRankWrapper>
+          <UserTeam playerList={playerInfoList} />
+          <UserRank score={score} />
+        </TeamRankWrapper>
+        <ResultsWrapper>
+          <Header2>
+            POST MATCH RESULTS
+            {/* first strike na in the background in block text? */}
+          </Header2>
+          {matches && matches.map((match) => <PostMatchResults match={match} />)}
+        </ResultsWrapper>
+      </DashboardWrapper>
+    </>
   );
 };
 
