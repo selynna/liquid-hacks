@@ -50,7 +50,7 @@ def getTournaments(request):
         }
         response = requests.post(base_url, data=post_body)
         json_data = json.loads(response.text)
-        return HttpResponse(str(json_data))
+        return HttpResponse(json_data)
 
 def getMatches(request):
     if request.method == 'GET':
@@ -156,10 +156,10 @@ def createUser(userId: str, picks: list):
         print("{} was added to the database".format(u.__str__()))
 
 def userResponse(userId: str):
-    return {
+    return json.dumps({
         "user" : userId,
         "picks" : User.objects.get(userId=userId).picks
-    }
+    })
 
 def getUserPicks(request):
     # given userid -> check existence -> return json array
@@ -168,7 +168,7 @@ def getUserPicks(request):
         userId = params["uid"].strip('"')
         if not User.objects.filter(userId=userId).exists():
             createUser(userId, [])
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
 
 def setUserPicks(request):
     if request.method == "GET":
@@ -182,7 +182,7 @@ def setUserPicks(request):
             u = User.objects.get(userId=userId)
             u.picks = players
             u.save()
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
 
 def addUserPick(request):
     #given userid + playerid -> add to db -> return new picks array
@@ -197,7 +197,7 @@ def addUserPick(request):
             if playerId not in u.picks:
                 u.picks.append(playerId)
                 u.save()
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
 
 def deleteUserPick(request):
     #given userid + playerid -> remove pick from array -> return new picks array
@@ -212,7 +212,7 @@ def deleteUserPick(request):
             if playerId in u.picks:
                 u.picks.remove(playerId)
                 u.save()
-        return HttpResponse(str(userResponse(userId)))
+        return HttpResponse(userResponse(userId))
 
 def getPlayerCombatScore(request):
     # given tournament name & player name -> return average combat score
@@ -228,7 +228,7 @@ def getPlayerCombatScore(request):
             "player" : player_name,
             "score" : score
         }
-        return HttpResponse(str(ret_json))
+        return HttpResponse(json.dumps(ret_json))
     
 def combat_calculation(kda: list):
     # [kills, deaths, assists]
