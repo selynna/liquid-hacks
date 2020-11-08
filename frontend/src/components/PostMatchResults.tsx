@@ -12,10 +12,10 @@ type TournamentInfo = {
 type MatchInfo = {
   id: number;
   round: string;
-  team1: string;
-  team2: string;
-  team1Score: number;
-  team2Score: number;
+  opponent1: string;
+  opponent2: string;
+  opponent1score: number;
+  opponent2score: number;
   games: Array<GameInfo>;
 };
 
@@ -58,18 +58,76 @@ type MatchResultsProps = {
   match: MatchInfo;
 };
 
-const PostMatchResults = ({ match }: MatchResultsProps) => (
+const PostMatchResults = ({ match }: any) => (
   <MatchResultWrapper>
     {/* <TournamentInfo>
       {tournament.name} - {match.round}
     </TournamentInfo> */}
     <MatchName>
-      {match.team1} {match.team1Score}-{match.team2Score} {match.team2}
+      {match.opponent1} {match.opponent1score}-{match.opponent2score}{' '}
+      {match.opponent2}
     </MatchName>
     <GamesWrapper>
-      {match.games.map(game => (
-        <Game key={game.mapName + game.gameNumber} game={game} />
-      ))}
+      {match.games
+        .filter((game) => game.winner !== 'skip')
+        .map((game, index) => {
+          const team1PlayerData = Object.fromEntries(
+            Object.entries(game.extradata).filter(
+              ([key, val]) => key.startsWith('t1') && val !== ''
+            )
+          );
+
+          const t1pd: any = [];
+          for (let i = 1; i <= 5; i++) {
+            const pd = {
+              ign: team1PlayerData['t1p' + i],
+              agent: team1PlayerData['t1a' + i],
+            };
+            const [kills, deaths, assists] = (team1PlayerData[
+              't1kda' + i
+            ] as string).split('/');
+            t1pd.push({ ...pd, kills, deaths, assists });
+          }
+
+          const team2PlayerData = Object.fromEntries(
+            Object.entries(game.extradata).filter(
+              ([key, val]) => key.startsWith('t2') && val !== ''
+            )
+          );
+
+          const t2pd: any = [];
+          for (let i = 1; i <= 5; i++) {
+            const pd = {
+              ign: team2PlayerData['t2p' + i],
+              agent: team2PlayerData['t2a' + i],
+            };
+            const [kills, deaths, assists] = (team2PlayerData[
+              't2kda' + i
+            ] as string).split('/');
+            t2pd.push({ ...pd, kills, deaths, assists });
+          }
+
+          return (
+            <Game
+              game={
+                {
+                  gameNumber: index + 1,
+                  mapName: game.map,
+                  team1Data: {
+                    score: game.opponent1score,
+                    name: game.opponent1,
+                    playerData: t1pd,
+                  },
+                  team2Data: {
+                    score: game.opponent2score,
+                    name: game.opponent2,
+                    playerData: t2pd,
+                  },
+                } as GameInfo
+              }
+            />
+          );
+        })}
     </GamesWrapper>
   </MatchResultWrapper>
 );
