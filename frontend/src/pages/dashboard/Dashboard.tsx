@@ -161,7 +161,7 @@ const match: MatchInfo = {
 // ]
 
 const Dashboard = () => {
-  const [matches, setMatches] = React.useState([match]);
+  const [matches, setMatches] = React.useState([]);
 
   React.useEffect(() => {
     const fetchMatches = async () => {
@@ -172,7 +172,7 @@ const Dashboard = () => {
         }
       );
 
-      console.log(res);
+      setMatches(res.data.result);
     };
     fetchMatches();
   }, []);
