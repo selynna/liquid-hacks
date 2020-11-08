@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
 import { bgDark, textLight } from 'res/colors.json';
@@ -12,39 +17,6 @@ type PlayerInfo = {
   playerKDA: string;
   playerScore: number;
 };
-
-const playerList: Array<PlayerInfo> = [
-  {
-    playerName: 'Person 1',
-    playerTeam: 'Team 1',
-    playerKDA: '10/5/10',
-    playerScore: 30,
-  },
-  {
-    playerName: 'Person 2',
-    playerTeam: 'Team 2',
-    playerKDA: '10/5/10',
-    playerScore: 30,
-  },
-  {
-    playerName: 'Person 3',
-    playerTeam: 'Team 3',
-    playerKDA: '10/5/10',
-    playerScore: 30,
-  },
-  {
-    playerName: 'Person 4',
-    playerTeam: 'Team 4',
-    playerKDA: '10/5/10',
-    playerScore: 30,
-  },
-  {
-    playerName: 'Person 5',
-    playerTeam: 'Team 5',
-    playerKDA: '10/5/10',
-    playerScore: 30,
-  },
-];
 
 type TournamentInfo = {
   name: string;
@@ -177,40 +149,62 @@ const match: MatchInfo = {
   ],
 };
 
-// const matchList: Array<MatchInfo> = [
-//   {
-//     matchId: 1,
-//     matchTitle: "DWG vs. SN",
-//     winner: "DWG"
-//   },
-//   {
-//     matchId: 2,
-//     matchTitle: "DWG vs. SN 2",
-//     winner: "DWG 2"
-//   },
-//   {
-//     matchId: 3,
-//     matchTitle: "DWG vs. SN 3",
-//     winner: "DWG 3"
-//   },
-// ]
-
 const Dashboard = () => {
-  const [matches, setMatches] = React.useState([match]);
+  const [hasError, setErrors] = useState(false);
+  const [players, setPlayers] = useState([]);
+  const [playerInfoList, setPlayerInfoList] = useState<PlayerInfo[]>([]);
+  const [matches, setMatches] = useState([match]);
+  const [score, setScore] = useState(0);
+
+  const fetchPicks = useCallback(async () => {
+    const res = await axios.get(process.env.REACT_APP_API_URL + "/getUserPicks/?uid=selynna")
+    setPlayers(res.data.picks)
+  }, []);
+
+  useEffect(() => {
+    fetchPicks();
+    const teamPromises = players.map(player =>
+      axios.get(process.env.REACT_APP_API_URL + "/getplayer/?player=" + player)
+    );
+    Promise.all(teamPromises).then(res => {
+      const newList = res.map(player => {
+        const data = player.data.result[0];
+        return {
+          playerName: data.id,
+          playerTeam: data.team,
+          playerKDA: "10/5/10",
+        }
+      }) as any;
+      setPlayerInfoList(newList);
+    });
+    const acsPromises = players.map(player =>
+      axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player)
+    );
+    Promise.all(acsPromises).then(res => {
+      const newList = res.map((player, i) => {
+        setScore(score + player.data.score);
+        return {
+          ...playerInfoList[i],
+          playerScore: player.data.score,
+        }
+      }) as any;
+      setPlayerInfoList(newList);
+    });
+  }, []);
+
   return (
     <DashboardWrapper>
       <TeamRankWrapper>
-        <UserTeam playerList={playerList} />
-        <UserRank playerList={playerList} />
+        <UserTeam playerList={playerInfoList} />
+        <UserRank score={score} />
       </TeamRankWrapper>
-      <div>
+      <ResultsWrapper>
         <Header2>
           POST MATCH RESULTS
           {/* first strike na in the background in block text? */}
         </Header2>
-
         {matches && matches.map((match) => <PostMatchResults match={match} />)}
-      </div>
+      </ResultsWrapper>
     </DashboardWrapper>
   );
 };
@@ -230,6 +224,10 @@ const TeamRankWrapper = styled.div`
   padding-top: 20px;
   width: 33%;
   margin-left: 60px;
+`;
+
+const ResultsWrapper = styled.div`
+  margin-top: 20px;
 `;
 
 const Header2 = styled.h2`

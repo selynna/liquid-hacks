@@ -21,8 +21,8 @@ const Player = ({
     <PlayerInfo>
       <HeaderText>{playerName} - {playerTeam}</HeaderText>
       <DataWrapper>
-        <Text>Average KDA: {playerKDA}</Text>
-        <Text>Total average ACS: {playerScore}</Text>
+        {/* <Text>Average KDA: {playerKDA}</Text> */}
+        <Text>Total ACS: {playerScore}</Text>
       </DataWrapper>
     </PlayerInfo>
   </PlayerWrapper>
@@ -53,7 +53,7 @@ const PlayerInfo = styled.div`
 
 const Text = styled.p`
   font-family: OpenSans-Regular;
-  font-size: 14px;
+  font-size: 16px;
   margin: 0;
 `;
 

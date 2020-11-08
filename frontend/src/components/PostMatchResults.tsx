@@ -67,8 +67,8 @@ const PostMatchResults = ({ match }: MatchResultsProps) => (
       {match.team1} {match.team1Score}-{match.team2Score} {match.team2}
     </MatchName>
     <GamesWrapper>
-      {match.games.map((game) => (
-        <Game game={game} />
+      {match.games.map(game => (
+        <Game key={game.mapName + game.gameNumber} game={game} />
       ))}
     </GamesWrapper>
   </MatchResultWrapper>
@@ -79,11 +79,11 @@ const MatchResultWrapper = styled.div`
   padding-top: 20px;
 `;
 
-const TournamentInfo = styled.p`
-  font-family: FFMark;
-  font-size: 24px;
-  letter-spacing: 0.1em;
-`;
+// const TournamentInfo = styled.p`
+//   font-family: FFMark;
+//   font-size: 24px;
+//   letter-spacing: 0.1em;
+// `;
 
 const MatchName = styled.p`
   font-family: FFMark;
@@ -91,7 +91,7 @@ const MatchName = styled.p`
   letter-spacing: 0.1em;
 `;
 
-const GamesWrapper = styled.p`
+const GamesWrapper = styled.div`
   font-family: OpenSans-regular;
 `;
 
