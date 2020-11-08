@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+
 import TopBar from 'components/TopBar';
 import { P, Header } from 'components/Text';
 import Colors from 'res/colors.json';
+import Button from 'components/Button';
 
 import CustomTeam from './CustomTeam';
 import TeamSelect from './TeamSelect';
@@ -138,7 +140,14 @@ const TeamCreation = () => {
           </Section>
         </Content>
       </DragDropContext>
-      <div></div>
+      <Section style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Button
+          onClick={() => console.log('CREATE TEAM')}
+          disabled={customTeam.length < 5}
+        >
+          Create
+        </Button>
+      </Section>
     </Page>
   );
 };

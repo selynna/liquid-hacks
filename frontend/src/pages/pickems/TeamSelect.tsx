@@ -89,7 +89,7 @@ const PlayerList = styled.div`
 const TeamLogo = styled.img`
   width: auto;
   height: auto;
-  max-height: 299px;
+  max-height: 200px;
   align-self: center;
   margin: 16px 0;
 `;
