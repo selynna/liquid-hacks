@@ -27,11 +27,14 @@ const UserTeam = ({ playerList }: UserTeamProps) => (
 
 const TeamWrapper = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const Header2 = styled.h2`
   font-family: Tungsten-Bold;
+  font-size: 60px;
+  letter-spacing: 1.5px;
+  margin: 0;
 `;
-
 
 export default UserTeam;

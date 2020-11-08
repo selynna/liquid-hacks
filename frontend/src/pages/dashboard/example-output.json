@@ -1,0 +1,59 @@
+{
+  "tournament": {
+    "name": "tournament name",
+    "link": "vlr.gg/...",
+  },
+  "match": {
+    "id": 1,
+    "round": "quarterfinal",
+    "team1": "Team Solomid",
+    "team2": "100 Thieves",
+    "games": [
+      {
+        "gameNumber": 1,
+        "mapName": Ascent,
+        "vlr": link,
+        "team1Data": {
+          "score": 13,
+          "name": "100 Thieves",
+          "playerData": [
+            {
+              "ign": "steel",
+              "agent": "Killjoy",
+              "acs": 294,
+              "kills": 21,
+              "deaths": 13,
+              "assists": 3,
+            },
+            ... for 5 players
+          ]
+        },
+        "team2Data": {
+          ...
+        }
+      }
+    ]
+  },
+  "team1": {
+    "name": "Team Solomid",
+    "socials": {
+      "liquipedia": "link",
+      "vlr": "link",
+      "site": "link",
+      "twitter": "link",
+      "youtube": "link",
+      "fb": "link",
+    }
+  },
+  "team2": {
+    "name": "100 Thieves",
+    "socials": {
+      "liquipedia": "link",
+      "vlr": "link",
+      "site": "link",
+      "twitter": "link",
+      "youtube": "link",
+      "fb": "link",
+    }
+  }
+}

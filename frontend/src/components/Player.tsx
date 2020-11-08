@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { primary } from 'res/colors.json';
+
 type PlayerProps = {
   playerName: string,
   playerTeam: string,
@@ -17,29 +19,49 @@ const Player = ({
   <PlayerWrapper>
     <PhotoWrapper />
     <PlayerInfo>
-      <PlayerName>{playerName}</PlayerName>
-      <PlayerTeam>{playerTeam}</PlayerTeam>
-      <PlayerKDA>{playerKDA}</PlayerKDA>
-      <PlayerScore>{playerScore}</PlayerScore>
+      <HeaderText>{playerName} - {playerTeam}</HeaderText>
+      <DataWrapper>
+        <Text>Average KDA: {playerKDA}</Text>
+        <Text>Total average ACS: {playerScore}</Text>
+      </DataWrapper>
     </PlayerInfo>
   </PlayerWrapper>
 );
 
-const PlayerWrapper = styled.div``;
-
-const PhotoWrapper = styled.div`
-  border: 1px solid black;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  margin: 10px;
+const PlayerWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
-const PlayerInfo = styled.div``;
-const PlayerName = styled.h2``;
-const PlayerTeam = styled.h3``;
-const PlayerKDA = styled.h4``;
-const PlayerScore = styled.h4``;
+const DataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
+const PhotoWrapper = styled.div`
+  border: 2px solid ${primary};
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 10px 20px 10px 0;
+`;
+
+const PlayerInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Text = styled.p`
+  font-family: OpenSans-Regular;
+  font-size: 14px;
+  margin: 0;
+`;
+
+const HeaderText = styled.p`
+  font-family: FFMark;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  margin: 0;
+`;
 
 export default Player;
