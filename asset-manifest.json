@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/liquid-hacks/static/css/main.94e1cb30.chunk.css",
+    "main.js": "/liquid-hacks/static/js/main.1ef68e6c.chunk.js",
+    "main.js.map": "/liquid-hacks/static/js/main.1ef68e6c.chunk.js.map",
+    "runtime-main.js": "/liquid-hacks/static/js/runtime-main.ef41f4f3.js",
+    "runtime-main.js.map": "/liquid-hacks/static/js/runtime-main.ef41f4f3.js.map",
+    "static/js/2.6ec385a5.chunk.js": "/liquid-hacks/static/js/2.6ec385a5.chunk.js",
+    "static/js/2.6ec385a5.chunk.js.map": "/liquid-hacks/static/js/2.6ec385a5.chunk.js.map",
+    "static/js/3.9a91213a.chunk.js": "/liquid-hacks/static/js/3.9a91213a.chunk.js",
+    "static/js/3.9a91213a.chunk.js.map": "/liquid-hacks/static/js/3.9a91213a.chunk.js.map",
+    "index.html": "/liquid-hacks/index.html",
+    "static/css/main.94e1cb30.chunk.css.map": "/liquid-hacks/static/css/main.94e1cb30.chunk.css.map",
+    "static/js/2.6ec385a5.chunk.js.LICENSE.txt": "/liquid-hacks/static/js/2.6ec385a5.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/liquid-hacks/static/media/Valorant.86ec8370.ttf",
+    "static/media/background.7813339f.jpg": "/liquid-hacks/static/media/background.7813339f.jpg",
+    "static/media/logo.103b5fa1.svg": "/liquid-hacks/static/media/logo.103b5fa1.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ef41f4f3.js",
+    "static/js/2.6ec385a5.chunk.js",
+    "static/css/main.94e1cb30.chunk.css",
+    "static/js/main.1ef68e6c.chunk.js"
+  ]
+}
