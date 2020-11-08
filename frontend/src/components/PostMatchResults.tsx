@@ -107,8 +107,8 @@ const GamesWrapper = styled.p`
 
 const Header2 = styled.h2`
   font-family: Tungsten-Bold;
-  font-size: 60px;
-  letter-spacing: 1.5px;
+  font-size: 72px;
+  letter-spacing: 2px;
   margin: 0;
 `;
 
