@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import TopBar from 'components/TopBar';
 import { P, Header } from 'components/Text';
@@ -73,6 +74,7 @@ const TeamCreation = () => {
   const [customTeam, setCustomTeam] = React.useState<Player[]>([]);
   const [teams, setTeams] = React.useState(fetchedTeams);
   const [curTeamName, setCurTeamName] = React.useState(null);
+  const history = useHistory();
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -119,12 +121,18 @@ const TeamCreation = () => {
   };
 
   const createTeam = async () => {
-    await axios.get(`${process.env.REACT_APP_API_URL}/setUserPicks/`, {
-      params: {
-        uid: 'asdf', //TODO CHANGE THIS
-        players: customTeam.map((player) => player.name).join(','),
-      },
-    });
+    try {
+      await axios.get(`${process.env.REACT_APP_API_URL}/setUserPicks/`, {
+        params: {
+          uid: 'asdf', //TODO CHANGE THIS
+          players: customTeam.map((player) => player.name).join(','),
+        },
+      });
+      history.push('/dashboard');
+    } catch (e) {
+      console.error(e);
+      alert('Something went wrong. Please try again');
+    }
   };
 
   return (
