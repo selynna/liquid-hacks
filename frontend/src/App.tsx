@@ -29,8 +29,11 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/dashboard"></Route>
-        <Route path="/pickems"></Route>
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route path="/pickems">
+        </Route>
         <Route path="/">
           <div className="App">
             <header className="App-header">
