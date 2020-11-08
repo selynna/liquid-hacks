@@ -30,6 +30,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/dashboard">
+          <Dashboard />
         </Route>
         <Route path="/pickems">
         </Route>

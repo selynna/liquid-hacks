@@ -16,7 +16,9 @@ type UserTeamProps = {
 
 const UserTeam = ({ playerList }: UserTeamProps) => (
   <div>
-    YOUR TEAM
+    <Header2>
+      YOUR TEAM
+    </Header2>
     <TeamWrapper>
       {playerList.map(player => <Player {...player} />)}
     </TeamWrapper>
@@ -25,7 +27,11 @@ const UserTeam = ({ playerList }: UserTeamProps) => (
 
 const TeamWrapper = styled.div`
   display: flex;
-
 `;
+
+const Header2 = styled.h2`
+  font-family: Tungsten-Bold;
+`;
+
 
 export default UserTeam;
