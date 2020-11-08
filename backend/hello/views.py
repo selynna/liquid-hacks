@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from datetime import datetime
 
 from .models import Greeting
 from datetime import datetime
 import os
 import requests
 import json
-
-API_KEY = os.environ.get("LIQUID_API_KEY", "put an api key in the environment")
 
 # Create your views here.
 #def index(request):
@@ -31,41 +30,50 @@ def db(request):
 
     return render(request, "db.html", {"greetings": greetings})
 
-def get_tournament(request):
+# format: yyyy-mm-dd
+def current_date():
+    return datetime.today().strftime('%Y-%m-%d')
+
+def getTournament(request):
     if request.method == 'GET':
         base_url = 'https://api.liquipedia.net/api/v1/tournament'
         post_body = {
             'wiki': "valorant",
-            "apikey": API_KEY,
+            "apikey": os.environ.get('LIQUID_API_KEY'),
             "conditions": "[[enddate::>%s]] AND [[startdate::<%s]]" % (current_date(), current_date())
         }
         response = requests.post(base_url, data=post_body)
         json_data = json.loads(response.text)
-        print(json_data.keys())
         tournament_names = {'results': []}
         for tourn in json_data['result']:
             tournament_names['results'].append(tourn['name'])
         return HttpResponse(str(tournament_names))
 
-def get_matches(request):
-    if request.method == "GET":
-        base_url = "https://api.liquipedia.net/api/v1/match"
-        post_body = {
-            'wiki': "valorant",
-            "apikey": API_KEY,
-            "conditions": "[[tournament::%s]]" % ()
-        }
+def getPlayersFromTeam(request):
+    if request.method == 'GET':
+        print("Get players from team")
+        params = request.GET.dict()
+        team = params["team"].strip('"')
+        print("  Extracted team id: ", team)
+        url = "https://api.liquipedia.net/api/v1/player"
+        data = {'apikey':os.environ.get('LIQUID_API_KEY'),
+                'wiki':'valorant',
+                'conditions':"[[team::"+team+"]]"
+                }
+        print("Sending request POST\n  URL: ",url,"\n  Params:",data)
+        r = requests.post(url, data)
+        print("  Response: ", r.text)
+        return HttpResponse(r.text)
+    else:
+        print("getPlayersFromTeam invalid method, POST only")
+        return HttpResponse("Invalid")
 
-# format: yyyy-mm-dd
-def current_date():
-    return datetime.today().strftime('%Y-%m-%d')
-
-def getplayer(request):
+def getPlayer(request):
     if request.method == 'GET':
         print("Get player")
         params = request.GET.dict()
         print(params)
-        playerid = params["player"]
+        playerid = params["player"].strip('"')
         print("Extracted player id: ",id)
         # Form Liquipedia API POST request
         url = "https://api.liquipedia.net/api/v1/player"
@@ -73,12 +81,10 @@ def getplayer(request):
                 'wiki':'valorant',
                 'conditions':"[[id::"+playerid+"]]"
                 }
-        print("Sending request POST")
-        print("  URL: ",url)
-        print("  Params: ",data)
+        print("Sending request POST\n  URL: ",url,"\n  Params:",data)
         r = requests.post(url, data)
         print("  Response: ",r.text)
         return HttpResponse(r.text)
     else:
-        print("Get player invalid method")
+        print("getPlayer invalid method, POST only")
         return HttpResponse("Invalid")
