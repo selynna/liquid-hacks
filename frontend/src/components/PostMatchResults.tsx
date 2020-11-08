@@ -12,10 +12,10 @@ type TournamentInfo = {
 type MatchInfo = {
   id: number;
   round: string;
-  team1: string;
-  team2: string;
-  team1Score: number;
-  team2Score: number;
+  opponent1: string;
+  opponent2: string;
+  opponent1score: number;
+  opponent2score: number;
   games: Array<GameInfo>;
 };
 
@@ -64,7 +64,8 @@ const PostMatchResults = ({ match }: MatchResultsProps) => (
       {tournament.name} - {match.round}
     </TournamentInfo> */}
     <MatchName>
-      {match.team1} {match.team1Score}-{match.team2Score} {match.team2}
+      {match.opponent1} {match.opponent1score}-{match.opponent2score}{' '}
+      {match.opponent2}
     </MatchName>
     <GamesWrapper>
       {match.games.map((game) => (

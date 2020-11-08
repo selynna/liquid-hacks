@@ -5,6 +5,7 @@ import { bgDark, textLight } from 'res/colors.json';
 import PostMatchResults from 'components/PostMatchResults';
 import UserRank from 'components/UserRank';
 import UserTeam from 'components/UserTeam';
+import axios from 'axios';
 
 type PlayerInfo = {
   playerName: string;
@@ -59,47 +60,11 @@ const tournament: TournamentInfo = {
 type MatchInfo = {
   id: number;
   round: string;
-  team1: string;
-  team2: string;
-  team1Score: number;
-  team2Score: number;
+  opponent1: string;
+  opponent2: string;
+  opponent1score: number;
+  opponent2score: number;
   games: Array<GameInfo>;
-};
-
-type TeamInfo = {
-  socials: {
-    liquipedia?: string;
-    vlr?: string;
-    site?: string;
-    twitter?: string;
-    youtube?: string;
-    fb?: string;
-  };
-  name: string;
-};
-
-const team1: TeamInfo = {
-  name: 'Team Solomid',
-  socials: {
-    liquipedia: 'link',
-    vlr: 'link',
-    site: 'link',
-    twitter: 'link',
-    youtube: 'link',
-    fb: 'link',
-  },
-};
-
-const team2: TeamInfo = {
-  name: '100 Thieves',
-  socials: {
-    liquipedia: 'link',
-    vlr: 'link',
-    site: 'link',
-    twitter: 'link',
-    youtube: 'link',
-    fb: 'link',
-  },
 };
 
 type GameInfo = {
@@ -128,10 +93,10 @@ type TeamData = {
 const match: MatchInfo = {
   id: 1,
   round: 'quarterfinals',
-  team1: 'Team Solomid',
-  team1Score: 0,
-  team2: '100 Thieves',
-  team2Score: 2,
+  opponent1: 'Team Solomid',
+  opponent1score: 0,
+  opponent2: '100 Thieves',
+  opponent2score: 2,
   games: [
     {
       gameNumber: 1,
@@ -197,6 +162,20 @@ const match: MatchInfo = {
 
 const Dashboard = () => {
   const [matches, setMatches] = React.useState([match]);
+
+  React.useEffect(() => {
+    const fetchMatches = async () => {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/getmatches/`,
+        {
+          params: { tournament: 'First Strike North America - NSG Tournament' },
+        }
+      );
+
+      console.log(res);
+    };
+    fetchMatches();
+  }, []);
   return (
     <DashboardWrapper>
       <TeamRankWrapper>
