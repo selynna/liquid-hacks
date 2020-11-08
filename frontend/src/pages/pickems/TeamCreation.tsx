@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import TopBar from 'components/TopBar';
 import { P, Header } from 'components/Text';
@@ -21,7 +23,7 @@ type Player = {
   country: string;
 };
 
-const fetchedTeams: Array<Team> = [
+const mockTeams: Array<Team> = [
   {
     name: 'Team Liquid',
     logoUrl: 'https://i.imgur.com/OtZfAU8.png',
@@ -62,16 +64,18 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return [sourceClone, destClone];
 };
 
-const findTeam = (playerName) => {
-  return fetchedTeams.find((team) =>
-    team.players.find((player) => player.name === playerName)
-  )?.name;
-};
-
 const TeamCreation = () => {
   const [customTeam, setCustomTeam] = React.useState<Player[]>([]);
-  const [teams, setTeams] = React.useState(fetchedTeams);
+  const [fetchedTeams, setFetchedTeams] = React.useState<Team[]>([]);
+  const [teams, setTeams] = React.useState<Team[]>([]);
   const [curTeamName, setCurTeamName] = React.useState(null);
+  const history = useHistory();
+
+  const findTeam = (playerName) => {
+    return fetchedTeams?.find((team) =>
+      team.players.find((player) => player.name === playerName)
+    )?.name;
+  };
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -117,6 +121,47 @@ const TeamCreation = () => {
     setCustomTeam(newCustomTeam as Player[]);
   };
 
+  const createTeam = async () => {
+    try {
+      await axios.get(`${process.env.REACT_APP_API_URL}/setUserPicks/`, {
+        params: {
+          uid: 'asdf', //TODO CHANGE THIS
+          players: customTeam.map((player) => player.name).join(','),
+        },
+      });
+      history.push('/dashboard');
+    } catch (e) {
+      console.error(e);
+      alert('Something went wrong. Please try again');
+    }
+  };
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/getteamsfromtournament/`,
+        {
+          params: {
+            tournament: 'First Strike North America - NSG Tournament',
+          },
+        }
+      );
+
+      const fetchedTeams = Object.entries(res.data).map(
+        ([teamName, playersObj]: any) => ({
+          name: teamName,
+          players: Object.entries(playersObj)
+            .filter(([key, value]) => !key.includes('flag'))
+            .map(([key, value]) => ({ name: value })),
+        })
+      ) as any;
+
+      setFetchedTeams(fetchedTeams);
+      setTeams(fetchedTeams);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Page>
       <TopBar />
@@ -141,10 +186,7 @@ const TeamCreation = () => {
         </Content>
       </DragDropContext>
       <Section style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Button
-          onClick={() => console.log('CREATE TEAM')}
-          disabled={customTeam.length < 5}
-        >
+        <Button onClick={createTeam} disabled={customTeam.length < 5}>
           Create
         </Button>
       </Section>

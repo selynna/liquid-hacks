@@ -7,38 +7,38 @@ import UserRank from 'components/UserRank';
 import UserTeam from 'components/UserTeam';
 
 type PlayerInfo = {
-  playerName: string,
-  playerTeam: string,
-  playerKDA: string,
-  playerScore: number,
-}
+  playerName: string;
+  playerTeam: string;
+  playerKDA: string;
+  playerScore: number;
+};
 
 const playerList: Array<PlayerInfo> = [
-  { 
+  {
     playerName: 'Person 1',
     playerTeam: 'Team 1',
     playerKDA: '10/5/10',
     playerScore: 30,
   },
-  { 
+  {
     playerName: 'Person 2',
     playerTeam: 'Team 2',
     playerKDA: '10/5/10',
     playerScore: 30,
   },
-  { 
+  {
     playerName: 'Person 3',
     playerTeam: 'Team 3',
     playerKDA: '10/5/10',
     playerScore: 30,
   },
-  { 
+  {
     playerName: 'Person 4',
     playerTeam: 'Team 4',
     playerKDA: '10/5/10',
     playerScore: 30,
   },
-  { 
+  {
     playerName: 'Person 5',
     playerTeam: 'Team 5',
     playerKDA: '10/5/10',
@@ -47,136 +47,135 @@ const playerList: Array<PlayerInfo> = [
 ];
 
 type TournamentInfo = {
-  name: string,
-  link: string,
-}
+  name: string;
+  link: string;
+};
 
 const tournament: TournamentInfo = {
-  name: "NSG Closed Qualifier",
-  link: "vlr.gg"
+  name: 'NSG Closed Qualifier',
+  link: 'vlr.gg',
 };
 
 type MatchInfo = {
-  id: number,
-  round: string,
-  team1: string,
-  team2: string,
-  team1Score: number,
-  team2Score: number,
-  games: Array<GameInfo>,
-}
+  id: number;
+  round: string;
+  team1: string;
+  team2: string;
+  team1Score: number;
+  team2Score: number;
+  games: Array<GameInfo>;
+};
 
 type TeamInfo = {
   socials: {
-    liquipedia?: string,
-    vlr?: string,
-    site?: string,
-    twitter?: string,
-    youtube?: string,
-    fb?: string,
-  }
-  name: string,
-}
+    liquipedia?: string;
+    vlr?: string;
+    site?: string;
+    twitter?: string;
+    youtube?: string;
+    fb?: string;
+  };
+  name: string;
+};
 
 const team1: TeamInfo = {
-  name: "Team Solomid",
+  name: 'Team Solomid',
   socials: {
-    liquipedia: "link",
-    vlr: "link",
-    site: "link",
-    twitter: "link",
-    youtube: "link",
-    fb: "link"
-  }
-}
+    liquipedia: 'link',
+    vlr: 'link',
+    site: 'link',
+    twitter: 'link',
+    youtube: 'link',
+    fb: 'link',
+  },
+};
 
 const team2: TeamInfo = {
-  name: "100 Thieves",
+  name: '100 Thieves',
   socials: {
-    liquipedia: "link",
-    vlr: "link",
-    site: "link",
-    twitter: "link",
-    youtube: "link",
-    fb: "link"
-  }
-}
+    liquipedia: 'link',
+    vlr: 'link',
+    site: 'link',
+    twitter: 'link',
+    youtube: 'link',
+    fb: 'link',
+  },
+};
 
 type GameInfo = {
-  gameNumber: number,
-  mapName: string,
-  team1Data: TeamData,
-  team2Data: TeamData,
-  vlr: string,
-}
+  gameNumber: number;
+  mapName: string;
+  team1Data: TeamData;
+  team2Data: TeamData;
+  vlr: string;
+};
 
 type PlayerData = {
-  ign: string,
-  agent: string,
-  acs: number,
-  kills: number,
-  deaths: number,
-  assists: number,
-}
+  ign: string;
+  agent: string;
+  acs: number;
+  kills: number;
+  deaths: number;
+  assists: number;
+};
 
 type TeamData = {
-  score: number,
-  name: string,
-  playerData: Array<PlayerData>
-}
+  score: number;
+  name: string;
+  playerData: Array<PlayerData>;
+};
 
 const match: MatchInfo = {
   id: 1,
-  round: "quarterfinals",
-  team1: "Team Solomid",
+  round: 'quarterfinals',
+  team1: 'Team Solomid',
   team1Score: 0,
-  team2: "100 Thieves",
+  team2: '100 Thieves',
   team2Score: 2,
   games: [
     {
       gameNumber: 1,
-      mapName: "Ascent",
-      vlr: "link",
+      mapName: 'Ascent',
+      vlr: 'link',
       team1Data: {
         score: 13,
-        name: "100 Thieves",
+        name: '100 Thieves',
         playerData: [
           {
-            ign: "steel",
-            agent: "Killjoy",
+            ign: 'steel',
+            agent: 'Killjoy',
             acs: 294,
             kills: 21,
             deaths: 13,
             assists: 3,
           },
           {
-            ign: "Dicey",
-            agent: "jett",
+            ign: 'Dicey',
+            agent: 'jett',
             acs: 294,
             kills: 21,
             deaths: 13,
             assists: 3,
           },
-        ]
+        ],
       },
       team2Data: {
         score: 7,
-        name: "Team Solomid",
+        name: 'Team Solomid',
         playerData: [
           {
-            ign: "Wardell",
-            agent: "Jett",
+            ign: 'Wardell',
+            agent: 'Jett',
             acs: 315,
             kills: 22,
             deaths: 14,
             assists: 0,
-          }
-        ]
-
-      }
-    }
-  ]
-}
+          },
+        ],
+      },
+    },
+  ],
+};
 
 // const matchList: Array<MatchInfo> = [
 //   {
@@ -196,19 +195,25 @@ const match: MatchInfo = {
 //   },
 // ]
 
-const Dashboard = () => (
-  <DashboardWrapper>
-    <TeamRankWrapper>
-      <UserTeam playerList={playerList} />
-      <UserRank playerList={playerList} />
-    </TeamRankWrapper>
-    <PostMatchResults 
-      tournament={tournament}
-      teams={[team1, team2]}
-      match={match}
-    />
-  </DashboardWrapper>
-);
+const Dashboard = () => {
+  const [matches, setMatches] = React.useState([match]);
+  return (
+    <DashboardWrapper>
+      <TeamRankWrapper>
+        <UserTeam playerList={playerList} />
+        <UserRank playerList={playerList} />
+      </TeamRankWrapper>
+      <div>
+        <Header2>
+          POST MATCH RESULTS
+          {/* first strike na in the background in block text? */}
+        </Header2>
+
+        {matches && matches.map((match) => <PostMatchResults match={match} />)}
+      </div>
+    </DashboardWrapper>
+  );
+};
 
 const DashboardWrapper = styled.div`
   margin: 0;
@@ -225,6 +230,13 @@ const TeamRankWrapper = styled.div`
   padding-top: 20px;
   width: 33%;
   margin-left: 60px;
+`;
+
+const Header2 = styled.h2`
+  font-family: Tungsten-Bold;
+  font-size: 72px;
+  letter-spacing: 2px;
+  margin: 0;
 `;
 
 export default Dashboard;
