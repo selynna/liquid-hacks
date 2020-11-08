@@ -148,7 +148,15 @@ const match: MatchInfo = {
             kills: 21,
             deaths: 13,
             assists: 3,
-          }
+          },
+          {
+            ign: "Dicey",
+            agent: "jett",
+            acs: 294,
+            kills: 21,
+            deaths: 13,
+            assists: 3,
+          },
         ]
       },
       team2Data: {

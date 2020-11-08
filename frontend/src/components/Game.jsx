@@ -111,61 +111,18 @@ const Game = ({ game: {
   team2Data,
 // }}: GameInfoProps) => {
 }}) => {
-  const team1Columns = useMemo(
-    () => [
-      {
-        Header: team1Data.name,
-        accessor: 'teamName',
-      },
-      ...commonHeaders,
-    ],
-    [],
-  );
-  
-  const columns = [
+  const generateColumns = ({ name }) => [
     {
-      Header: team1Data.name,
-      accessor: 'teamName',
-    },
-    ...commonHeaders,
-  ]
-
-  const team2Columns = [
-    {
-      Header: team2Data.name,
+      Header: name,
       accessor: 'teamName',
     },
     ...commonHeaders,
   ];
 
-  const data = useMemo(
-    () => [
-      {
-        player: "steel",
-        agent: "Killjoy",
-        teamName: "blank",
-        acs: 23,
-        kills: 24,
-        deaths: 25,
-        assists: 26,
-      }
-    ],
-    [],
-  );
-  const team2TableData = useMemo(
-    () => [
-      {
-        player: "steel",
-        agent: "Killjoy",
-        teamName: "blank",
-        acs: 23,
-        kills: 24,
-        deaths: 25,
-        assists: 26,
-      }
-    ],
-    [],
-  );
+  const generateTableData = ({ playerData }) => playerData.map(data => ({
+    ...data,
+    teamName: `${data.ign} - ${data.agent}`
+  }))
 
   let winner = "Tie";
   if (team1Data.score < team2Data.score) {
@@ -184,7 +141,14 @@ const Game = ({ game: {
         {/* add link */}
       </Winner>
       <StyledTable>
-        <Table columns={columns} data={data} />
+        <Table
+          columns={generateColumns(team1Data)}
+          data={generateTableData(team1Data)}
+        />
+        <Table
+          columns={generateColumns(team2Data)}
+          data={generateTableData(team2Data)}
+        />
       </StyledTable>
     </GameInfoWrapper>
   )
@@ -194,7 +158,9 @@ const GameInfoWrapper = styled.div``;
 const GameTitle = styled.p``;
 const Winner = styled.p``;
 const StyledTable = styled.div`
+  display: flex;
   table {
+    margin-right: 40px;
     border-spacing: 0;
     border: 1px solid ${textLight};
   }
