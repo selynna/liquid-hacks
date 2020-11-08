@@ -137,11 +137,11 @@ const MatchResultWrapper = styled.div`
   padding-top: 20px;
 `;
 
-const TournamentInfo = styled.p`
-  font-family: FFMark;
-  font-size: 24px;
-  letter-spacing: 0.1em;
-`;
+// const TournamentInfo = styled.p`
+//   font-family: FFMark;
+//   font-size: 24px;
+//   letter-spacing: 0.1em;
+// `;
 
 const MatchName = styled.p`
   font-family: FFMark;
@@ -149,7 +149,7 @@ const MatchName = styled.p`
   letter-spacing: 0.1em;
 `;
 
-const GamesWrapper = styled.p`
+const GamesWrapper = styled.div`
   font-family: OpenSans-regular;
 `;
 
