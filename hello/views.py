@@ -238,9 +238,6 @@ def getAllUsers(request):
             users.append(json_object)
         return HttpResponse(json.dumps(users))
 
-def getMatchesInTournament(request):
-    pass
-
 def getPlayerCombatScore(request):
     # given tournament name & player name -> return average combat score
     if request.method == "GET":
