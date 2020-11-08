@@ -15,7 +15,6 @@ import { textLight } from 'res/colors.json';
 // type PlayerData = {
 //   ign: string,
 //   agent: string,
-//   acs: number,
 //   kills: number,
 //   deaths: number,
 //   assists: number,
@@ -32,10 +31,6 @@ import { textLight } from 'res/colors.json';
 // }
 
 const commonHeaders = [
-  {
-    Header: 'ACS',
-    accessor: 'acs',
-  },
   {
     Header: 'K',
     accessor: 'kills',
@@ -195,7 +190,6 @@ const StyledTable = styled.div`
     //       {
     //         ign: "steel",
     //         agent: "Killjoy",
-    //         acs: 294,
     //         kills: 21,
     //         deaths: 13,
     //         assists: 3,
