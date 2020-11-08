@@ -4,8 +4,8 @@ import Colors from 'res/colors.json';
 
 import Button from 'components/Button';
 
-const TopBar = () => (
-  <Container>
+const TopBar = ({ className }: { className?: string }) => (
+  <Container className={className}>
     <Section>
       <Link>Game info</Link>
       <Link>Link #2</Link>
@@ -28,6 +28,7 @@ const Container = styled.div`
   letter-spacing: 0.1em;
   font-size: 12px;
   text-transform: uppercase;
+  top: 0;
 
   > :first-child {
     margin-left: 32px;

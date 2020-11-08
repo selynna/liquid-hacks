@@ -5,6 +5,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
+import LandingPage from 'pages/landing/LandingPage';
 import Dashboard from 'pages/dashboard/Dashboard';
 import TeamCreation from 'pages/pickems/TeamCreation';
 
@@ -26,6 +27,28 @@ const HeaderText = styled.p`
   letter-spacing: 0.1em;
 `;
 
+const TestComponent = () => (
+  <div className="App">
+    <header className="App-header">
+      <HeaderText>GAME INFO</HeaderText>
+      <Header>Valorant But Fantasy Football</Header>
+      <img src={logo} className="App-logo" alt="logo" />
+      <Header2>Section Header</Header2>
+      <Text>
+        Edit <code>src/App.tsx</code> and save to reload.
+      </Text>
+      <a
+        className="App-link"
+        href="https://reactjs.org"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Learn React
+      </a>
+    </header>
+  </div>
+);
+
 function App() {
   return (
     <Router>
@@ -37,25 +60,7 @@ function App() {
           <TeamCreation />
         </Route>
         <Route path="/">
-          <div className="App">
-            <header className="App-header">
-              <HeaderText>GAME INFO</HeaderText>
-              <Header>Valorant But Fantasy Football</Header>
-              <img src={logo} className="App-logo" alt="logo" />
-              <Header2>Section Header</Header2>
-              <Text>
-                Edit <code>src/App.tsx</code> and save to reload.
-              </Text>
-              <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn React
-              </a>
-            </header>
-          </div>
+          <LandingPage />
         </Route>
       </Switch>
     </Router>
