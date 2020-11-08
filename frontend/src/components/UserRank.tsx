@@ -25,6 +25,8 @@ const placeEnd = (num: number) => {
   }
 }
 
+const isYou = user => localStorage.getItem('uid') === user;
+
 const UserRank = ({ score }: UserTeamProps) => {
   const [userList, setUserList] = useState([]);
 
@@ -33,7 +35,7 @@ const UserRank = ({ score }: UserTeamProps) => {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/getAllUsers/`);
       const newUserList = res.data.map(user => ({
         userId: user.userId,
-        score: user.userId === "selynna" ? score : 100,
+        score: isYou(user.userId) ? score : 13000,
       }))
       newUserList.sort((a, b) => b.score - a.score);
       setUserList(newUserList);
@@ -47,15 +49,11 @@ const UserRank = ({ score }: UserTeamProps) => {
         RANKINGS
       </Header2>
       {userList.map((user: any, place) => 
-        <TeamWrapper key={user.userId} user={user.userId === "selynna"}>
+        <TeamWrapper key={user.userId} user={isYou(user.userId)}>
           <UserCol>
-            {user.userId === "selynna" ? user.userId + " (you)" : user.userId}
+            {isYou(user.userId) ? user.userId + " (you)" : user.userId}
           </UserCol>
           <ScoreCol>{user.score}</ScoreCol>
-          {user === "you"
-            ? "you're in " + (place + 1) + placeEnd(place + 1) + " place!"
-            : ""
-          }
         </TeamWrapper>
       )}
     </UserRankWrapper>
