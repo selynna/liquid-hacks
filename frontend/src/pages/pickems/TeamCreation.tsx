@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
+import axios from 'axios';
 
 import TopBar from 'components/TopBar';
 import { P, Header } from 'components/Text';
@@ -117,6 +118,15 @@ const TeamCreation = () => {
     setCustomTeam(newCustomTeam as Player[]);
   };
 
+  const createTeam = async () => {
+    await axios.get(`${process.env.REACT_APP_API_URL}/setUserPicks/`, {
+      params: {
+        uid: 'asdf', //TODO CHANGE THIS
+        players: customTeam.map((player) => player.name).join(','),
+      },
+    });
+  };
+
   return (
     <Page>
       <TopBar />
@@ -141,10 +151,7 @@ const TeamCreation = () => {
         </Content>
       </DragDropContext>
       <Section style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Button
-          onClick={() => console.log('CREATE TEAM')}
-          disabled={customTeam.length < 5}
-        >
+        <Button onClick={createTeam} disabled={customTeam.length < 5}>
           Create
         </Button>
       </Section>
