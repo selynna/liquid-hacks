@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
-import Colors from 'res/colors.json';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import Colors from 'res/colors.json';
 import { P } from 'components/Text';
 
 import PlayerCell from './PlayerCell';
@@ -52,7 +54,20 @@ const TeamSelect = ({ teams, curTeamName, setCurTeamName }) => {
           setCurTeamName(value);
         }}
       />
-      <TeamLogo src={curTeam?.logoUrl} />
+      <div style={{ height: 232, alignSelf: 'center' }}>
+        <AnimatePresence exitBeforeEnter>
+          {curTeam && (
+            <TeamLogo
+              key={curTeam.name}
+              initial={{ x: -150, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 150, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              src={curTeam.logoUrl}
+            />
+          )}
+        </AnimatePresence>
+      </div>
       <P style={{ marginBottom: 8 }}>Drag players to your team</P>
       <Droppable droppableId="source">
         {(provided, snapshot) => (
@@ -86,7 +101,7 @@ const PlayerList = styled.div`
   flex-flow: column;
 `;
 
-const TeamLogo = styled.img`
+const TeamLogo = styled(motion.img)`
   width: auto;
   height: auto;
   max-height: 200px;
