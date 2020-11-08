@@ -5,6 +5,7 @@
     "textDark": "#768079",
     "textLight": "#ece8e1",
     "textWhite": "#F9F9F9",
+    "borderLight": "rgb(189, 188, 183)",
     "primary": "#ff4655",
     "warning": "#E69700"
 }
