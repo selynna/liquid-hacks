@@ -26,7 +26,6 @@ const UserTeam = ({ playerList }: UserTeamProps) => (
 );
 
 const UserTeamWrapper = styled.div`
-  border-right: 1px solid gray;
   margin-right: 30px;
 `;
 
