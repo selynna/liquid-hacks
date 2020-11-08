@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import datetime
 
-from .models import Greeting
+from .models import Greeting, User
 from datetime import datetime
 from pytz import timezone
 import pytz
@@ -108,3 +108,9 @@ def getPlayer(request):
     else:
         print("getPlayer invalid method, POST only")
         return HttpResponse("Invalid")
+
+def updateUser(request):
+    if request.method == "GET":
+        u = User(userId="endpoint", picks=["there", "are", "poggers"])
+        u.save()
+        return HttpResponse("i added a thingy")

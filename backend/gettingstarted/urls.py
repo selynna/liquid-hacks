@@ -22,4 +22,6 @@ urlpatterns = [
     path("getplayer/", hello.views.getPlayer, name="getPlayer"),
     path("getmatches/", hello.views.getMatches, name="getMatches"),
     path("getplayersfromteam/", hello.views.getPlayersFromTeam, name="getPlayersFromTeam"),
+    path("updateUser/", hello.views.updateUser, name="updateUser"),
+
 ]
