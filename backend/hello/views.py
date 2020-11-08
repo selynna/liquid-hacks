@@ -50,10 +50,7 @@ def getTournaments(request):
         }
         response = requests.post(base_url, data=post_body)
         json_data = json.loads(response.text)
-        tournament_names = {'results': []}
-        for tourn in json_data['result']:
-            tournament_names['results'].append(tourn['name'])
-        return HttpResponse(str(tournament_names))
+        return HttpResponse(str(json_data))
 
 def getMatches(request):
     if request.method == 'GET':
