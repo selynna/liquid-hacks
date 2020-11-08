@@ -174,6 +174,7 @@ const Dashboard = () => {
     };
     fetchMatches();
   }, []);
+
   return (
     <DashboardWrapper>
       <TeamRankWrapper>
