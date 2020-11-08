@@ -91,6 +91,9 @@ const LandingPage = () => {
           src="https://i.gyazo.com/00983eae2248b1a356a77a4b7cc1a002.png"
         />
       </Section>
+      <Footer>
+        Data from First Strike: North America
+      </Footer>
     </Page>
   );
 };
@@ -127,7 +130,7 @@ const Section = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  height: 600px;
 `;
 
 const Hero = styled.div`
@@ -138,6 +141,20 @@ const Hero = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
+`;
+
+const Footer = styled.div`
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  background-color: ${Colors.bgDark};
+  font-family: OpenSans-Regular;
+  font-size: 12px;
+  color: ${Colors.textWhite};
 `;
 
 const Input = styled.input`
