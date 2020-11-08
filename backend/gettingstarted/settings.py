@@ -13,10 +13,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import django_heroku
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -27,7 +25,7 @@ SECRET_KEY = "CHANGE_ME!!!! (P.S. the SECRET_KEY environment variable will be us
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,18 +74,6 @@ WSGI_APPLICATION = "gettingstarted.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE" : "django.db.backends.postgresql_psycopg2",
-        "NAME": "userpicks",
-        "USER": "projectuser",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": ""
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -123,5 +109,16 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = "/static/"
+
+DATABASES = {
+    "default": {
+        "ENGINE" : "django.db.backends.postgresql_psycopg2",
+        "NAME": "userpicks",
+        "USER": "projectuser",
+        "PASSWORD": "password",
+        "HOST": "localhost",
+        "PORT": "",
+    }
+}
 
 django_heroku.settings(locals())

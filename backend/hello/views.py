@@ -214,10 +214,15 @@ def deleteUserPick(request):
         return HttpResponse(userResponse(userId))
 
 def getAllUsers(request):
+    string= ""
     if request.method == "GET":
         users = []
         for u in User.objects.all():
-            print(type(u))
+            string += type(u) + "\n"
+    return HttpResponse(string)
+
+def getMatchesInTournament(request):
+    pass
 
 def getPlayerCombatScore(request):
     # given tournament name & player name -> return average combat score
