@@ -20,6 +20,7 @@ const Container = styled.button<any>`
   border: none;
   letter-spacing: 0.05em;
   min-width: 274px;
+  cursor: pointer;
 
   &:hover {
     background: ${Colors.bgDark};

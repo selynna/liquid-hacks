@@ -8,8 +8,10 @@ import styled from 'styled-components';
 
 import { bgDark, textLight } from 'res/colors.json';
 import PostMatchResults from 'components/PostMatchResults';
+import TopBar from 'components/TopBar';
 import UserRank from 'components/UserRank';
 import UserTeam from 'components/UserTeam';
+
 
 type PlayerInfo = {
   playerName: string;
@@ -31,47 +33,11 @@ const tournament: TournamentInfo = {
 type MatchInfo = {
   id: number;
   round: string;
-  team1: string;
-  team2: string;
-  team1Score: number;
-  team2Score: number;
+  opponent1: string;
+  opponent2: string;
+  opponent1score: number;
+  opponent2score: number;
   games: Array<GameInfo>;
-};
-
-type TeamInfo = {
-  socials: {
-    liquipedia?: string;
-    vlr?: string;
-    site?: string;
-    twitter?: string;
-    youtube?: string;
-    fb?: string;
-  };
-  name: string;
-};
-
-const team1: TeamInfo = {
-  name: 'Team Solomid',
-  socials: {
-    liquipedia: 'link',
-    vlr: 'link',
-    site: 'link',
-    twitter: 'link',
-    youtube: 'link',
-    fb: 'link',
-  },
-};
-
-const team2: TeamInfo = {
-  name: '100 Thieves',
-  socials: {
-    liquipedia: 'link',
-    vlr: 'link',
-    site: 'link',
-    twitter: 'link',
-    youtube: 'link',
-    fb: 'link',
-  },
 };
 
 type GameInfo = {
@@ -100,10 +66,10 @@ type TeamData = {
 const match: MatchInfo = {
   id: 1,
   round: 'quarterfinals',
-  team1: 'Team Solomid',
-  team1Score: 0,
-  team2: '100 Thieves',
-  team2Score: 2,
+  opponent1: 'Team Solomid',
+  opponent1score: 0,
+  opponent2: '100 Thieves',
+  opponent2score: 2,
   games: [
     {
       gameNumber: 1,
@@ -151,82 +117,83 @@ const match: MatchInfo = {
 
 const Dashboard = () => {
   const [hasError, setErrors] = useState(false);
-  const [players, setPlayers] = useState([]);
-  const [playerInfoList, setPlayerInfoList] = useState<PlayerInfo[]>([]);
-  const [matches, setMatches] = useState([match]);
+  const startingInfoList = [0, 1, 2, 3, 4].map(i => ({
+    playerName: "-",
+    playerTeam: "-",
+    playerScore: 0,
+    playerKDA: "10/5/10",
+  }))
+  const [playerInfoList, setPlayerInfoList] = useState<PlayerInfo[]>(startingInfoList);
   const [score, setScore] = useState(0);
 
   const fetchPicks = useCallback(async () => {
     const res = await axios.get(process.env.REACT_APP_API_URL + "/getUserPicks/?uid=selynna")
-    setPlayers(res.data.picks)
+    const playerArr = res.data.picks;
+    const teamPromises = playerArr.map(player =>
+      axios.all([
+        axios.get(process.env.REACT_APP_API_URL + "/getplayer/?player=" + player),
+        axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player),
+      ])
+    );
+
+    Promise.all(teamPromises)
+      .then(res => {
+        let newScore = 0;
+        const newPlayerInfoList = res.map((data: any) => {
+          const ign = data[0].data.result[0].id;
+          const team = data[0].data.result[0].team;
+          const score = data[1].data.score;
+          newScore += score;
+          return {
+            playerName: ign,
+            playerTeam: team,
+            playerScore: score,
+            playerKDA: "10/5/10",
+          }
+        });
+        console.log("new player info list", newPlayerInfoList);
+        setPlayerInfoList(playerInfoList => newPlayerInfoList);
+        setScore(newScore);
+      })
   }, []);
 
   useEffect(() => {
     fetchPicks();
-    console.log("players", players);
-    const teamPromises = players.map(player =>
-      axios.all([
-        axios.get(process.env.REACT_APP_API_URL + "/getplayer/?player=" + player),
-        axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player),
-      ]).then(axios.spread((team, score) => {
-        console.log("team", team.data.result[0].team, "score", score.data.score);
-        setPlayerInfoList([...playerInfoList, {
-          playerName: team.data.result[0].id,
-          playerTeam: team.data.result[0].team,
-          playerScore: score.data.score,
-          playerKDA: "10/5/10",
-        }])
-        setScore(score + score.data.score);
-      }))
-    );
+  }, []);
 
-    Promise.all(teamPromises);
+  const [matches, setMatches] = React.useState([]);
 
-    // console.log(teamPromises);
-    // Promise.all(teamPromises).then(res => {
-    //   console.log(res);
-    //   const newList = res.map(player => {
-    //     // const data = player.data.result[0];
-    //     const data = { id: 1, team: "asdf"}
-    //     return {
-    //       playerName: data.id,
-    //       playerTeam: data.team,
-    //       playerKDA: "10/5/10",
-    //     }
-    //   }) as any;
-    //   setPlayerInfoList(newList);
-    // });
-    // console.log("pil", playerInfoList);
-    // const acsPromises = players.map(player =>
-    //   axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player)
-    // );
-    // Promise.all(acsPromises).then(res => {
-    //   const newList = res.map((player, i) => {
-    //     setScore(score + player.data.score);
-    //     return {
-    //       ...playerInfoList[i],
-    //       playerScore: player.data.score,
-    //     }
-    //   }) as any;
-    //   console.log("newList", newList);
-    //   setPlayerInfoList(newList);
-    // });
+  React.useEffect(() => {
+    const fetchMatches = async () => {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/getmatches/`,
+        {
+          params: { tournament: 'First Strike North America - NSG Tournament' },
+        }
+      );
+
+      setMatches(res.data.result);
+    };
+    fetchMatches();
   }, []);
 
   return (
-    <DashboardWrapper>
-      <TeamRankWrapper>
-        <UserTeam playerList={playerInfoList} />
-        <UserRank score={score} />
-      </TeamRankWrapper>
-      <ResultsWrapper>
-        <Header2>
-          POST MATCH RESULTS
-          {/* first strike na in the background in block text? */}
-        </Header2>
-        {matches && matches.map((match) => <PostMatchResults match={match} />)}
-      </ResultsWrapper>
-    </DashboardWrapper>
+    <>
+      <TopBar />
+      <DashboardWrapper>
+        <TeamRankWrapper>
+          <UserTeam playerList={playerInfoList} />
+          <UserRank score={score} />
+        </TeamRankWrapper>
+        <ResultsWrapper>
+          <Header2>
+            POST MATCH RESULTS
+            {/* first strike na in the background in block text? */}
+          </Header2>
+          {matches && matches.map((match) => <PostMatchResults match={match} />)}
+        </ResultsWrapper>
+      </DashboardWrapper>
+    </>
   );
 };
 

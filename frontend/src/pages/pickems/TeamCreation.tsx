@@ -71,6 +71,12 @@ const TeamCreation = () => {
   const [curTeamName, setCurTeamName] = React.useState(null);
   const history = useHistory();
 
+  React.useEffect(() => {
+    if (!localStorage.getItem('uid')) {
+      history.push('/');
+    }
+  });
+
   const findTeam = (playerName) => {
     return fetchedTeams?.find((team) =>
       team.players.find((player) => player.name === playerName)
@@ -125,7 +131,7 @@ const TeamCreation = () => {
     try {
       await axios.get(`${process.env.REACT_APP_API_URL}/setUserPicks/`, {
         params: {
-          uid: 'asdf', //TODO CHANGE THIS
+          uid: localStorage.getItem('uid'),
           players: customTeam.map((player) => player.name).join(','),
         },
       });
