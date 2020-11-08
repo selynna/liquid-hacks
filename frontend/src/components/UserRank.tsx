@@ -1,17 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { primary, warning } from 'res/colors.json';
-
-type playerInfo = {
-  playerName: string,
-  playerTeam: string,
-  playerKDA: string,
-  playerScore: number,
-}
+import { primary } from 'res/colors.json';
 
 type UserTeamProps = {
-  playerList: Array<playerInfo>
+  score: number,
 };
 
 const userList = ["turrence", "selynna (you)", "nguyen-darianhuy", "dzhang50"];
@@ -31,7 +24,7 @@ const placeEnd = (num: number) => {
   }
 }
 
-const UserRank = ({ playerList }: UserTeamProps) => (
+const UserRank = ({ score }: UserTeamProps) => (
   <UserRankWrapper>
     <Header2>
       RANKINGS

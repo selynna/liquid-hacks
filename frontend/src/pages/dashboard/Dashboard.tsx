@@ -154,42 +154,40 @@ const Dashboard = () => {
   const [players, setPlayers] = useState([]);
   const [playerInfoList, setPlayerInfoList] = useState<PlayerInfo[]>([]);
   const [matches, setMatches] = useState([match]);
+  const [score, setScore] = useState(0);
 
   const fetchPicks = useCallback(async () => {
-    const res = await axios.get(process.env.REACT_APP_API_URL + "getUserPicks/?uid=selynna")
+    const res = await axios.get(process.env.REACT_APP_API_URL + "/getUserPicks/?uid=selynna")
     setPlayers(res.data.picks)
   }, []);
 
   useEffect(() => {
     fetchPicks();
-    console.log("players", players);
     const teamPromises = players.map(player =>
-      axios.get(process.env.REACT_APP_API_URL + "getplayer/?player=" + player)
+      axios.get(process.env.REACT_APP_API_URL + "/getplayer/?player=" + player)
     );
-    const fetchTeams = async () => await Promise.all(teamPromises);
-    fetchTeams().then(res => {
+    Promise.all(teamPromises).then(res => {
       const newList = res.map(player => {
         const data = player.data.result[0];
-        console.log(data);
         return {
           playerName: data.id,
           playerTeam: data.team,
           playerKDA: "10/5/10",
-          playerScore: 30,
         }
       }) as any;
       setPlayerInfoList(newList);
     });
-    console.log(playerInfoList);
     const acsPromises = players.map(player =>
-      axios.get(process.env.REACT_APP_API_URL + "getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player)
+      axios.get(process.env.REACT_APP_API_URL + "/getPlayerCombatScore/?tournament=First%20Strike%20North%20America%20-%20NSG%20Tournament&player=" + player)
     );
-    const fetchAcs = async () => await Promise.all(acsPromises);
-    fetchAcs().then(res => {
-      const newList = res.map((player, i) => ({
+    Promise.all(acsPromises).then(res => {
+      const newList = res.map((player, i) => {
+        setScore(score + player.data.score);
+        return {
           ...playerInfoList[i],
           playerScore: player.data.score,
-      })) as any;
+        }
+      }) as any;
       setPlayerInfoList(newList);
     });
   }, []);
@@ -198,14 +196,13 @@ const Dashboard = () => {
     <DashboardWrapper>
       <TeamRankWrapper>
         <UserTeam playerList={playerInfoList} />
-        <UserRank playerList={playerInfoList} />
+        <UserRank score={score} />
       </TeamRankWrapper>
       <ResultsWrapper>
         <Header2>
           POST MATCH RESULTS
           {/* first strike na in the background in block text? */}
         </Header2>
-
         {matches && matches.map((match) => <PostMatchResults match={match} />)}
       </ResultsWrapper>
     </DashboardWrapper>
