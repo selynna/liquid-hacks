@@ -13,4 +13,4 @@ class User(models.Model):
     )
 
     def __str__(self):
-        return self.userId
+        return "(UserId: {}, Picks: {})".format(self.userId, str(self.picks))
