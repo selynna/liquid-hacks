@@ -49,8 +49,7 @@ def getTournaments(request):
             "conditions": "([[enddate::>%s]] OR [[enddate::%s]]) AND ([[startdate::<%s]] OR [[startdate::%s]])" % (date, date, date, date)
         }
         response = requests.post(base_url, data=post_body)
-        json_data = json.loads(response.text)
-        return HttpResponse(json_data)
+        return HttpResponse(response.text)
 
 def getMatches(request):
     if request.method == 'GET':
