@@ -15,15 +15,20 @@ type UserTeamProps = {
 };
 
 const UserTeam = ({ playerList }: UserTeamProps) => (
-  <div>
+  <UserTeamWrapper>
     <Header2>
       YOUR TEAM
     </Header2>
     <TeamWrapper>
       {playerList.map((player, i) => <Player key={player.playerName + i} {...player} />)}
     </TeamWrapper>
-  </div>
+  </UserTeamWrapper>
 );
+
+const UserTeamWrapper = styled.div`
+  border-right: 1px solid gray;
+  margin-right: 30px;
+`;
 
 const TeamWrapper = styled.div`
   display: flex;

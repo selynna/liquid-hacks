@@ -33,15 +33,31 @@ const UserRank = ({ score }: UserTeamProps) => {
   useEffect(() => {
     const fetchMatches = async () => {
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/getAllUsers/`);
-      const newUserList = res.data.map(user => ({
+      const tmpList = res.data.map(user => ({
         userId: user.userId,
         score: isYou(user.userId) ? score : 13000,
-      }))
+      })).sort((a, b) => b.score - a.score).slice(0, 5);
+      const newUserList = tmpList.map((user, i) => {
+        const tmpScore = user.score;
+        if (isYou(user.userId)) {
+          return user;
+        } else if (!isYou(user.userId) && i < 3) {
+          return {
+            userId: user.userId,
+            score: tmpScore - (150 * i)
+          }
+        } else {
+          return {
+            userId: user.userId,
+            score: tmpScore + (175 * i)
+          }
+        }
+      })
       newUserList.sort((a, b) => b.score - a.score);
       setUserList(newUserList);
     };
     fetchMatches();
-  }, []);
+  }, [score]);
 
   return (
     <UserRankWrapper>

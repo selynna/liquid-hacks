@@ -150,7 +150,6 @@ const Dashboard = () => {
             playerKDA: "10/5/10",
           }
         });
-        console.log("new player info list", newPlayerInfoList);
         setPlayerInfoList(playerInfoList => newPlayerInfoList);
         setScore(newScore);
       })
