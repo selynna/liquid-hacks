@@ -4,6 +4,9 @@ from datetime import datetime
 
 from .models import Greeting
 from datetime import datetime
+from pytz import timezone
+import pytz
+
 import os
 import requests
 import json
@@ -32,15 +35,18 @@ def db(request):
 
 # format: yyyy-mm-dd
 def current_date():
-    return datetime.today().strftime('%Y-%m-%d')
+    date = datetime.now(tz=pytz.utc)
+    date = date.astimezone(timezone('US/Pacific'))
+    return date.strftime('%Y-%m-%d')
 
 def getTournaments(request):
     if request.method == 'GET':
         base_url = 'https://api.liquipedia.net/api/v1/tournament'
+        date = current_date()
         post_body = {
             'wiki': "valorant",
             "apikey": os.environ.get('LIQUID_API_KEY'),
-            "conditions": "[[enddate::>%s]] AND [[startdate::<%s]]" % (current_date(), current_date())
+            "conditions": "([[enddate::>%s]] OR [[enddate::%s]]) AND ([[startdate::<%s]] OR [[startdate::%s]])" % (date, date, date, date)
         }
         response = requests.post(base_url, data=post_body)
         json_data = json.loads(response.text)
