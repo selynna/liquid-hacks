@@ -22,6 +22,8 @@ urlpatterns = [
     path("getplayer/", hello.views.getPlayer, name="getPlayer"),
     path("getmatches/", hello.views.getMatches, name="getMatches"),
     path("getplayersfromteam/", hello.views.getPlayersFromTeam, name="getPlayersFromTeam"),
-    path("updateUser/", hello.views.updateUser, name="updateUser"),
-
+    # path("updateUser/", hello.views.updateUser, name="updateUser"),
+    path("getUserPicks/", hello.views.getUserPicks, name="getUserPicks"),
+    path("addUserPick/", hello.views.addUserPick, name="addUserPick"),
+    path("deleteUserPick/", hello.views.deleteUserPick, name="deleteUserPick"),
 ]

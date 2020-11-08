@@ -114,3 +114,58 @@ def updateUser(request):
         u = User(userId="endpoint", picks=["there", "are", "poggers"])
         u.save()
         return HttpResponse("i added a thingy")
+
+def createUser(userId: str, picks: list):
+    if User.objects.filter(userId=userId).exists():
+        print("{} already exists in database", userId)
+    else:
+        u = User(userId=userId, picks=picks)
+        u.save()
+        print("{} was added to the database".format(u.__str__()))
+
+def userResponse(userId: str):
+    return {
+        "user" : userId,
+        "picks" : User.objects.get(userId=userId).picks
+    }
+
+def getUserPicks(request):
+    # given userid -> check existence -> return json array
+    if request.method == "GET":
+        params = request.GET.dict()
+        userId = params["uid"].strip('"')
+        if not User.objects.filter(userId=userId).exists():
+            createUser(userId, [])
+        return HttpResponse(str(userResponse(userId)))
+
+def addUserPick(request):
+    #given userid + playerid -> add to db -> return new picks array
+    if request.method == "GET":
+        params = request.GET.dict()
+        userId = params["uid"].strip('"')
+        playerId = params["player"].strip('"')
+        if not User.objects.filter(userId=userId).exists():
+            createUser(userId, [playerId])
+        else:
+            u = User.objects.get(userId=userId)
+            if playerId not in u.picks:
+                u.picks.append(playerId)
+                u.save()
+        return HttpResponse(str(userResponse(userId)))
+
+def deleteUserPick(request):
+    #given userid + playerid -> remove pick from array -> return new picks array
+    if request.method == "GET":
+        params = request.GET.dict()
+        userId = params["uid"].strip('"')
+        playerId = params["player"].strip('"')
+        if not User.objects.filter(userId=userId).exists():
+            createUser(userId, [])
+        else:
+            u = User.objects.get(userId=userId)
+            if playerId in u.picks:
+                u.picks.remove(playerId)
+                u.save()
+        return HttpResponse(str(userResponse(userId)))
+
+
